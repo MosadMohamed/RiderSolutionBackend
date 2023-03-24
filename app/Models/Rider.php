@@ -6,15 +6,15 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements JWTSubject
+class Rider extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-    protected $table = 'users';
-    protected $primaryKey = 'IDUser';
+    protected $table = 'riders';
+    protected $primaryKey = 'IDRider';
 
     protected $hidden = [
-        'UserPassword',
+        'RiderPassword',
     ];
 
     public function getJWTIdentifier()

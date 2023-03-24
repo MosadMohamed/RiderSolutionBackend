@@ -40,6 +40,18 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'office' => [
+            'driver' => 'session',
+            'provider' => 'offices',
+        ],
+        'company' => [
+            'driver' => 'jwt',
+            'provider' => 'companies',
+        ],
+        'rider' => [
+            'driver' => 'jwt',
+            'provider' => 'riders',
+        ],
     ],
 
     /*
@@ -63,6 +75,18 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'offices' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Office::class,
+        ],
+        'companies' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Company::class,
+        ],
+        'riders' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Rider::class,
         ],
 
         // 'users' => [

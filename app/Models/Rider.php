@@ -5,6 +5,7 @@ namespace App\Models;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use League\CommonMark\Node\Block\Document;
 
 class Rider extends Authenticatable implements JWTSubject
 {
@@ -25,5 +26,20 @@ class Rider extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function Office()
+    {
+        return $this->belongsTo(Office::class, 'IDOffice');
+    }
+
+    public function Country()
+    {
+        return $this->belongsTo(Country::class, 'IDCountry');
+    }
+
+    public function Documents()
+    {
+        return $this->hasMany(RiderDocument::class, 'IDRider');
     }
 }

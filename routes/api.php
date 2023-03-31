@@ -24,4 +24,6 @@ Route::prefix('rider')->group(function () {
     Route::post('register', [RiderAuthController::class, 'RiderRegister']);
 
     Route::post('country/list', [RiderAuthController::class, 'RiderCountry']);
+
+    Route::post('document/upload', [RiderAuthController::class, 'DocumentUpload']);
 });

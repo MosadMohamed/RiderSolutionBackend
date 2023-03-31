@@ -18,11 +18,16 @@ class RiderResource extends JsonResource
             'IDRider'           => $this->IDRider,
             'IDOffice'          => $this->IDOffice,
             'IDCountry'         => $this->IDCountry,
+            'RiderNaturalID'    => $this->RiderNaturalID,
             'RiderName'         => $this->RiderName,
             'RiderPhone'        => $this->RiderPhone,
             'RiderEmail'        => $this->RiderEmail,
             'RiderBirthDate'    => $this->RiderBirthDate,
             'RiderGender'       => $this->RiderGender,
+            'IsRider'           => $this->IsRider,
+            'IsPicker'          => $this->IsPicker,
+            'RiderActive'       => $this->RiderActive,
+            'Documents'         => DocumentResource::collection($this->Documents),
         ];
     }
 }

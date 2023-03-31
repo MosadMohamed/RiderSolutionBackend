@@ -8,11 +8,16 @@ use App\Http\Resources\Rider\RiderResource;
 use App\Models\ActionBackLog;
 use App\Models\Country;
 use App\Models\Rider;
+use App\Models\RiderDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class RiderAuthController extends Controller
 {
+    // Vicle Type
+    // FireBaseToken
+    // 
     public function RiderLogin(Request $request)
     {
         $Rider = auth('rider')->user();
@@ -20,17 +25,17 @@ class RiderAuthController extends Controller
         if ($Rider) {
             $Rider = Rider::find($Rider->IDRider);
             return response([
-                'Sussuss'   => true,
+                'Success'   => true,
                 'Message'   => 'Success Login',
                 'Token'     => request()->bearerToken(),
                 'Rider'     => RiderResource::make($Rider),
             ], 200);
         }
 
-        if (!$request->RiderPhone) {
+        if (!$request->RiderNaturalID) {
             return response([
-                'Sussuss'   => false,
-                'Message'   => 'Phone Required',
+                'Success'   => false,
+                'Message'   => 'Natural ID Required',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -38,37 +43,50 @@ class RiderAuthController extends Controller
 
         if (!$request->RiderPassword) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'Password Required',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
         }
 
-        $Rider = Rider::where('RiderPhone', $request->RiderPhone)
-            ->where('RiderActive', 1)->first();
+        $Rider = Rider::where('RiderNaturalID', $request->RiderNaturalID)->first();
 
         if (!$Rider) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'Rider Not Found',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
         }
 
+        // if (!$Rider->RiderActive) {
+        //     return response([
+        //         'Success'   => false,
+        //         'Message'   => 'Rider Not Active',
+        //         'Token'     => '',
+        //         'Rider'     => [],
+        //     ], 200);
+        // }
+
         if (!Hash::check($request->RiderPassword, $Rider->RiderPassword)) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'Error In Password',
                 'Token'     => '',
-                'User'      => [],
+                'Rider'     => [],
             ], 200);
+        }
+
+        if ($request->FirebaseToken) {
+            $Rider->FirebaseToken   = $request->FirebaseToken;
+            $Rider->save();
         }
 
         if (!$Token = auth('rider')->login($Rider)) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'Error In Login',
                 'Token'     => '',
                 'Rider'     => [],
@@ -83,10 +101,10 @@ class RiderAuthController extends Controller
         ]);
 
         return response([
-            'Sussuss'   => true,
+            'Success'   => true,
             'Message'   => 'Success Login',
             'Token'     => $Token,
-            'User'      => RiderResource::make($Rider),
+            'Rider'     => RiderResource::make($Rider),
         ], 200);
     }
 
@@ -94,7 +112,7 @@ class RiderAuthController extends Controller
     {
         if (!$request->IDOffice) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'IDOffice Required',
                 'Token'     => '',
                 'Rider'     => [],
@@ -103,8 +121,17 @@ class RiderAuthController extends Controller
 
         if (!$request->IDCountry) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'IDOffice Required',
+                'Token'     => '',
+                'Rider'     => [],
+            ], 200);
+        }
+
+        if (!$request->RiderNaturalID) {
+            return response([
+                'Success'   => false,
+                'Message'   => 'Natural ID Required',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -112,7 +139,7 @@ class RiderAuthController extends Controller
 
         if (!$request->RiderName) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'Name Required',
                 'Token'     => '',
                 'Rider'     => [],
@@ -121,7 +148,7 @@ class RiderAuthController extends Controller
 
         if (!$request->RiderPhone) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'Phone Required',
                 'Token'     => '',
                 'Rider'     => [],
@@ -130,7 +157,7 @@ class RiderAuthController extends Controller
 
         if (!$request->RiderEmail) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'Email Required',
                 'Token'     => '',
                 'Rider'     => [],
@@ -139,7 +166,7 @@ class RiderAuthController extends Controller
 
         if (!$request->RiderPassword) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'Password Required',
                 'Token'     => '',
                 'Rider'     => [],
@@ -148,7 +175,7 @@ class RiderAuthController extends Controller
 
         if (!$request->RiderBirthDate) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'BirthDate Required',
                 'Token'     => '',
                 'Rider'     => [],
@@ -157,7 +184,7 @@ class RiderAuthController extends Controller
 
         if (!$request->RiderGender) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'Gender Required',
                 'Token'     => '',
                 'Rider'     => [],
@@ -165,11 +192,12 @@ class RiderAuthController extends Controller
         }
 
         $RiderCheck = Rider::where('RiderPhone', $request->RiderPhone)
+            ->orWhere('RiderNaturalID', $request->RiderNaturalID)
             ->orWhere('RiderEmail', $request->RiderEmail)->first();
 
         if ($RiderCheck) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'Rider Already Exist',
                 'Token'     => '',
                 'Rider'     => [],
@@ -179,17 +207,21 @@ class RiderAuthController extends Controller
         $Rider = new Rider();
         $Rider->IDOffice        = $request->IDOffice;
         $Rider->IDCountry       = $request->IDCountry;
+        $Rider->RiderNaturalID  = $request->RiderNaturalID;
         $Rider->RiderName       = $request->RiderName;
         $Rider->RiderPhone      = $request->RiderPhone;
         $Rider->RiderEmail      = $request->RiderEmail;
         $Rider->RiderPassword   = Hash::make($request->RiderPassword);
         $Rider->RiderBirthDate  = $request->RiderBirthDate;
         $Rider->RiderGender     = $request->RiderGender;
+        $Rider->IsRider         = ($request->IsRider) ? 1 : 0;
+        $Rider->IsPicker        = ($request->IsPicker) ? 1 : 0;
+        $Rider->FirebaseToken   = ($request->FirebaseToken) ? $request->FirebaseToken : null;
         $Rider->save();
 
         if (!$Token = auth('rider')->login($Rider)) {
             return response([
-                'Sussuss'   => false,
+                'Success'   => false,
                 'Message'   => 'Error In Login',
                 'Token'     => '',
                 'Rider'     => [],
@@ -204,10 +236,10 @@ class RiderAuthController extends Controller
         ]);
 
         return response([
-            'Sussuss'   => true,
+            'Success'   => true,
             'Message'   => 'Success Register',
             'Token'     => $Token,
-            'User'      => RiderResource::make($Rider),
+            'Rider'     => RiderResource::make($Rider),
         ], 200);
     }
 
@@ -221,9 +253,61 @@ class RiderAuthController extends Controller
         $Countries = Country::where('CountryActive', 1)->get();
 
         return response([
-            'Sussuss'   => true,
+            'Success'   => true,
             'Message'   => 'Countries List',
-            'User'      => CountryResource::collection($Countries),
+            'Country'   => CountryResource::collection($Countries),
+        ], 200);
+    }
+
+    public function DocumentUpload(Request $request)
+    {
+        $Rider = auth('rider')->user();
+
+        if (!$Rider) {
+            return response([
+                'Success'   => false,
+                'Message'   => 'Rider Not Found',
+            ], 200);
+        }
+
+        $Rider = Rider::find($Rider->IDRider);
+        if (!$request->DocumentType) {
+            return response([
+                'Success'   => false,
+                'Message'   => 'Document Type Required',
+            ], 200);
+        }
+
+        if (!$request->DocumentImage) {
+            return response([
+                'Success'   => false,
+                'Message'   => 'Document Image Required',
+            ], 200);
+        }
+
+        $TypesArray = ['ID_FRONT', 'ID_BACK', 'VEHICLE_FRONT', 'VEHICLE_Back'];
+        if (!in_array($request->DocumentType, $TypesArray)) {
+            return response([
+                'Success'   => false,
+                'Message'   => 'Document Type Not Found',
+            ], 200);
+        }
+
+        $Document = new RiderDocument();
+        $Document->IDRider      = $Rider->IDRider;
+        $Document->DocumentType = $request->DocumentType;
+        $Document->save();
+
+        $Image  = $request->DocumentImage;
+        $Name   = $Document->IDDocument . '_' . rand(1, 99) . '.' . $Image->getClientOriginalExtension();
+        $Path   = 'images/documents/';
+        Storage::putFileAs($Path, $Image, $Name);
+        $Document->DocumentImage = $Name;
+        $Document->save();
+
+        return response([
+            'Success'   => true,
+            'Message'   => 'Success Upload File',
         ], 200);
     }
 }

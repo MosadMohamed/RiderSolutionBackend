@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RiderDocument extends Model
+class HiringApply extends Model
 {
     use HasFactory;
 
-    protected $table = 'rider_documents';
-    protected $primaryKey = 'IDDocument';
+    protected $table = 'hiring_applies';
+    protected $primaryKey = 'IDHiringApply';
 }

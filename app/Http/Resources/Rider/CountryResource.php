@@ -16,7 +16,8 @@ class CountryResource extends JsonResource
     {
         return [
             'IDCountry'     => $this->IDCountry,
-            'CountryName'   => $this->CountryName,
+            'CountryNameEn' => $this->CountryNameEn,
+            'CountryNameAr' => $this->CountryNameAr,
         ];
     }
 }

@@ -26,8 +26,10 @@ class RiderResource extends JsonResource
             'RiderGender'       => $this->RiderGender,
             'IsRider'           => $this->IsRider,
             'IsPicker'          => $this->IsPicker,
+            'VehlcleType'       => ($this->VehlcleType) ? $this->VehlcleType : '',
+            'IsUploaded'        => $this->IsUploaded,
             'RiderActive'       => $this->RiderActive,
-            'Documents'         => DocumentResource::collection($this->Documents),
+            'Documents'         => DocumentResource::collection($this->Documents->where('DocumentActive', 1)),
         ];
     }
 }

@@ -7,17 +7,16 @@ use App\Http\Resources\Rider\CountryResource;
 use App\Http\Resources\Rider\RiderResource;
 use App\Models\ActionBackLog;
 use App\Models\Country;
+use App\Models\Office;
 use App\Models\Rider;
 use App\Models\RiderDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class RiderAuthController extends Controller
 {
-    // Vicle Type
-    // FireBaseToken
-    // 
     public function RiderLogin(Request $request)
     {
         $Rider = auth('rider')->user();
@@ -26,7 +25,8 @@ class RiderAuthController extends Controller
             $Rider = Rider::find($Rider->IDRider);
             return response([
                 'Success'   => true,
-                'Message'   => 'Success Login',
+                'MessageEn' => 'Success Login',
+                'MessageAr' => 'تم تسجيل الدخول بنجاح',
                 'Token'     => request()->bearerToken(),
                 'Rider'     => RiderResource::make($Rider),
             ], 200);
@@ -35,7 +35,8 @@ class RiderAuthController extends Controller
         if (!$request->RiderNaturalID) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Natural ID Required',
+                'MessageEn' => 'Natural ID Required',
+                'MessageAr' => 'الرقم القومي مطلوب',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -44,7 +45,8 @@ class RiderAuthController extends Controller
         if (!$request->RiderPassword) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Password Required',
+                'MessageEn' => 'Password Required',
+                'MessageAr' => 'الرقم السري مطلوب',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -55,25 +57,18 @@ class RiderAuthController extends Controller
         if (!$Rider) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Rider Not Found',
+                'MessageEn' => 'Rider Not Found',
+                'MessageAr' => 'السائق غير موجود',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
         }
 
-        // if (!$Rider->RiderActive) {
-        //     return response([
-        //         'Success'   => false,
-        //         'Message'   => 'Rider Not Active',
-        //         'Token'     => '',
-        //         'Rider'     => [],
-        //     ], 200);
-        // }
-
         if (!Hash::check($request->RiderPassword, $Rider->RiderPassword)) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Error In Password',
+                'MessageEn' => 'Error In Password',
+                'MessageAr' => 'خطأ في كلمة السر',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -87,7 +82,8 @@ class RiderAuthController extends Controller
         if (!$Token = auth('rider')->login($Rider)) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Error In Login',
+                'MessageEn' => 'Error In Login',
+                'MessageAr' => 'خطأ في تسجيل الدخول',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -102,7 +98,8 @@ class RiderAuthController extends Controller
 
         return response([
             'Success'   => true,
-            'Message'   => 'Success Login',
+            'MessageEn' => 'Success Login',
+            'MessageAr' => 'تم تسجيل الدخول بنجاح',
             'Token'     => $Token,
             'Rider'     => RiderResource::make($Rider),
         ], 200);
@@ -113,7 +110,8 @@ class RiderAuthController extends Controller
         if (!$request->IDOffice) {
             return response([
                 'Success'   => false,
-                'Message'   => 'IDOffice Required',
+                'MessageEn' => 'Office Required',
+                'MessageAr' => 'المكتب مطلوب',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -122,7 +120,8 @@ class RiderAuthController extends Controller
         if (!$request->IDCountry) {
             return response([
                 'Success'   => false,
-                'Message'   => 'IDOffice Required',
+                'MessageEn' => 'Country Required',
+                'MessageAr' => 'الدولة مطلوبة',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -131,7 +130,8 @@ class RiderAuthController extends Controller
         if (!$request->RiderNaturalID) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Natural ID Required',
+                'MessageEn' => 'Natural ID Required',
+                'MessageAr' => 'الرقم القومي مطلوب',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -140,7 +140,8 @@ class RiderAuthController extends Controller
         if (!$request->RiderName) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Name Required',
+                'MessageEn' => 'Name Required',
+                'MessageAr' => 'الاسم مطلوب',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -149,7 +150,8 @@ class RiderAuthController extends Controller
         if (!$request->RiderPhone) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Phone Required',
+                'MessageEn' => 'Phone Required',
+                'MessageAr' => 'الهاتف مطلوب',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -158,7 +160,8 @@ class RiderAuthController extends Controller
         if (!$request->RiderEmail) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Email Required',
+                'MessageEn' => 'Email Required',
+                'MessageAr' => 'البريد الالكتروني مطلوب',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -167,7 +170,8 @@ class RiderAuthController extends Controller
         if (!$request->RiderPassword) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Password Required',
+                'MessageEn' => 'Password Required',
+                'MessageAr' => 'كلمة السر مطلوبة',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -176,7 +180,8 @@ class RiderAuthController extends Controller
         if (!$request->RiderBirthDate) {
             return response([
                 'Success'   => false,
-                'Message'   => 'BirthDate Required',
+                'MessageEn' => 'BirthDate Required',
+                'MessageAr' => 'تاريخ الميلاد مطلوب',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -185,7 +190,8 @@ class RiderAuthController extends Controller
         if (!$request->RiderGender) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Gender Required',
+                'MessageEn' => 'Gender Required',
+                'MessageAr' => 'النوع مطلوب',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -198,15 +204,30 @@ class RiderAuthController extends Controller
         if ($RiderCheck) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Rider Already Exist',
+                'MessageEn' => 'Rider Already Exist',
+                'MessageAr' => 'السائق مطلوب بالفعل',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
         }
 
+        $Office = Office::where('IDOffice', $request->IDOffice)->first();
+        if ($Office) {
+            $IDOffice = $Office->IDOffice;
+        } else {
+            $IDOffice = 1;
+        }
+
+        $Country = Country::where('IDCountry', $request->Country)->first();
+        if ($Country) {
+            $IDCountry = $Country->IDCountry;
+        } else {
+            $IDCountry = 1;
+        }
+
         $Rider = new Rider();
-        $Rider->IDOffice        = $request->IDOffice;
-        $Rider->IDCountry       = $request->IDCountry;
+        $Rider->IDOffice        = $IDOffice;
+        $Rider->IDCountry       = $IDCountry;
         $Rider->RiderNaturalID  = $request->RiderNaturalID;
         $Rider->RiderName       = $request->RiderName;
         $Rider->RiderPhone      = $request->RiderPhone;
@@ -222,7 +243,8 @@ class RiderAuthController extends Controller
         if (!$Token = auth('rider')->login($Rider)) {
             return response([
                 'Success'   => false,
-                'Message'   => 'Error In Login',
+                'MessageEn' => 'Error In Login',
+                'MessageAr' => 'خطأ في تسجيل الدخول',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -237,7 +259,8 @@ class RiderAuthController extends Controller
 
         return response([
             'Success'   => true,
-            'Message'   => 'Success Register',
+            'MessageEn' => 'Success Register',
+            'MessageAr' => 'تم التسجيل بنجاح',
             'Token'     => $Token,
             'Rider'     => RiderResource::make($Rider),
         ], 200);
@@ -245,7 +268,17 @@ class RiderAuthController extends Controller
 
     public function RiderLogout(Request $request)
     {
-        // 
+        $Rider = auth('rider')->user();
+        $Rider = Rider::find($Rider->IDRider);
+        Auth::guard('rider')->logout($Rider);
+
+        return response([
+            'Success'   => true,
+            'MessageEn' => 'Success Logout',
+            'MessageAr' => 'تم التسجيل الخروج بنجاح',
+            'Token'     => '',
+            'Rider'     => [],
+        ], 200);
     }
 
     public function RiderCountry()
@@ -254,60 +287,9 @@ class RiderAuthController extends Controller
 
         return response([
             'Success'   => true,
-            'Message'   => 'Countries List',
+            'MessageEn' => 'Countries List',
+            'MessageAr' => 'قائمة الدول',
             'Country'   => CountryResource::collection($Countries),
-        ], 200);
-    }
-
-    public function DocumentUpload(Request $request)
-    {
-        $Rider = auth('rider')->user();
-
-        if (!$Rider) {
-            return response([
-                'Success'   => false,
-                'Message'   => 'Rider Not Found',
-            ], 200);
-        }
-
-        $Rider = Rider::find($Rider->IDRider);
-        if (!$request->DocumentType) {
-            return response([
-                'Success'   => false,
-                'Message'   => 'Document Type Required',
-            ], 200);
-        }
-
-        if (!$request->DocumentImage) {
-            return response([
-                'Success'   => false,
-                'Message'   => 'Document Image Required',
-            ], 200);
-        }
-
-        $TypesArray = ['ID_FRONT', 'ID_BACK', 'VEHICLE_FRONT', 'VEHICLE_Back'];
-        if (!in_array($request->DocumentType, $TypesArray)) {
-            return response([
-                'Success'   => false,
-                'Message'   => 'Document Type Not Found',
-            ], 200);
-        }
-
-        $Document = new RiderDocument();
-        $Document->IDRider      = $Rider->IDRider;
-        $Document->DocumentType = $request->DocumentType;
-        $Document->save();
-
-        $Image  = $request->DocumentImage;
-        $Name   = $Document->IDDocument . '_' . rand(1, 99) . '.' . $Image->getClientOriginalExtension();
-        $Path   = 'images/documents/';
-        Storage::putFileAs($Path, $Image, $Name);
-        $Document->DocumentImage = $Name;
-        $Document->save();
-
-        return response([
-            'Success'   => true,
-            'Message'   => 'Success Upload File',
         ], 200);
     }
 }

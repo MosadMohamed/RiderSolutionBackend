@@ -19,7 +19,7 @@ class CompanyResource extends JsonResource
             'CompanyNameEn' => $this->CompanyNameEn,
             'CompanyNameAr' => $this->CompanyNameAr,
             'CompanyImage'  => asset('images/companies/' . $this->CompanyImage),
-            'Is_Requisted'  => ($this->Is_Requisted) ? $this->Is_Requisted : 0,
+            'Is_Requested'  => (int) ($this->Is_Requested) ? $this->Is_Requested : 0,
         ];
     }
 }

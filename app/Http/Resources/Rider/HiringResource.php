@@ -16,13 +16,13 @@ class HiringResource extends JsonResource
     {
         return [
             'IDHiring'      => $this->IDHiring,
-            'IDCompany'     => $this->IDCompany,
+            'IDCompany'     => (int)$this->IDCompany,
             'CompanyNameEn' => $this->Company->CompanyNameEn,
             'CompanyNameAr' => $this->Company->CompanyNameAr,
             'CompanyImage'  => asset('images/companies/' . $this->Company->CompanyImage),
             'HiringType'    => $this->HiringType,
             'HiringNote'    => $this->HiringNote,
-            'Is_Applied'    => ($this->Is_Applied) ? $this->Is_Applied : 0,
+            'Is_Applied'    => (int) ($this->Is_Applied) ? $this->Is_Applied : 0,
         ];
     }
 }

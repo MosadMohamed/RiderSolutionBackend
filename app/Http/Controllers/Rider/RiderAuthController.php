@@ -9,14 +9,18 @@ use App\Models\ActionBackLog;
 use App\Models\Country;
 use App\Models\Office;
 use App\Models\Rider;
-use App\Models\RiderDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class RiderAuthController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Rider Login
+    |--------------------------------------------------------------------------
+    */
     public function RiderLogin(Request $request)
     {
         $Rider = auth('rider')->user();
@@ -105,6 +109,11 @@ class RiderAuthController extends Controller
         ], 200);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Rider Register
+    |--------------------------------------------------------------------------
+    */
     public function RiderRegister(Request $request)
     {
         if (!$request->IDOffice) {
@@ -266,6 +275,11 @@ class RiderAuthController extends Controller
         ], 200);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Rider Logout
+    |--------------------------------------------------------------------------
+    */
     public function RiderLogout(Request $request)
     {
         $Rider = auth('rider')->user();
@@ -281,6 +295,11 @@ class RiderAuthController extends Controller
         ], 200);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Countries List For Rider Register
+    |--------------------------------------------------------------------------
+    */
     public function RiderCountry()
     {
         $Countries = Country::where('CountryActive', 1)->get();
@@ -290,6 +309,110 @@ class RiderAuthController extends Controller
             'MessageEn' => 'Countries List',
             'MessageAr' => 'قائمة الدول',
             'Country'   => CountryResource::collection($Countries),
+        ], 200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Edit Rider Profile
+    |--------------------------------------------------------------------------
+    */
+    public function EditProfile(Request $request)
+    {
+        $Rider = auth('rider')->user();
+
+        if (!$Rider) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Rider Not Found',
+                'MessageAr' => 'السائق مطلوب',
+                'Rider'     => [],
+            ], 200);
+        }
+        Log::info($request);
+
+        $Rider = Rider::find($Rider->IDRider);
+
+        if (!$request->RiderName) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Name Required',
+                'MessageAr' => 'الاسم مطلوب',
+                'Rider'     => [],
+            ], 200);
+        }
+
+        if (!$request->RiderPhone) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Phone Required',
+                'MessageAr' => 'الهاتف مطلوب',
+                'Rider'     => [],
+            ], 200);
+        }
+
+        if (!$request->RiderEmail) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Email Required',
+                'MessageAr' => 'البريد الالكتروني مطلوب',
+                'Rider'     => [],
+            ], 200);
+        }
+
+        if (!$request->RiderBirthDate) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'BirthDate Required',
+                'MessageAr' => 'تاريخ الميلاد مطلوب',
+                'Rider'     => [],
+            ], 200);
+        }
+
+        if (!$request->RiderGender) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Gender Required',
+                'MessageAr' => 'النوع مطلوب',
+                'Rider'     => [],
+            ], 200);
+        }
+
+        $RiderPhoneCheck = $request->RiderPhone;
+        $RiderEmailCheck = $request->RiderEmail;
+        $RiderCheck = Rider::where('IDRider', '<>', $Rider->IDRider)
+            ->where(function ($query) use ($RiderPhoneCheck, $RiderEmailCheck) {
+                $query->where('RiderPhone', $RiderPhoneCheck)
+                    ->orWhere('RiderEmail', $RiderEmailCheck)->first();
+            })->first();
+
+        if ($RiderCheck) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Phone or Email Already Exists',
+                'MessageAr' => 'الهاتف او البريد موجودون من قبل',
+                'Rider'     => [],
+            ], 200);
+        }
+
+        $Rider->RiderName       = $request->RiderName;
+        $Rider->RiderPhone      = $request->RiderPhone;
+        $Rider->RiderEmail      = $request->RiderEmail;
+        $Rider->RiderBirthDate  = $request->RiderBirthDate;
+        $Rider->RiderGender     = $request->RiderGender;
+        if ($request->RiderPassword) {
+            $Rider->RiderPassword = Hash::make($request->RiderPassword);
+        }
+        $Rider->save();
+
+        // Edit Documents
+        // Edit Rider OR Picker
+
+        return response([
+            'Success'   => true,
+            'MessageEn' => 'profile Updated Successfuly',
+            'MessageAr' => 'تم تعديل الملف الشخصي بنجاح',
+            'Rider'     => RiderResource::make($Rider),
         ], 200);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Rider;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,19 +17,22 @@ class RiderResource extends JsonResource
     {
         return [
             'IDRider'           => $this->IDRider,
-            'IDOffice'          => $this->IDOffice,
-            'IDCountry'         => $this->IDCountry,
+            'IDOffice'          => (int) $this->IDOffice,
+            'IDCountry'         => (int) $this->IDCountry,
             'RiderNaturalID'    => $this->RiderNaturalID,
             'RiderName'         => $this->RiderName,
             'RiderPhone'        => $this->RiderPhone,
             'RiderEmail'        => $this->RiderEmail,
             'RiderBirthDate'    => $this->RiderBirthDate,
-            'RiderGender'       => $this->RiderGender,
-            'IsRider'           => $this->IsRider,
-            'IsPicker'          => $this->IsPicker,
+            'RiderDay'          => Carbon::create($this->RiderBirthDate)->format('d'),
+            'RiderMonth'        => Carbon::create($this->RiderBirthDate)->format('m'),
+            'RiderYear'         => Carbon::create($this->RiderBirthDate)->format('Y'),
+            'RiderGender'       => ucfirst(strtolower($this->RiderGender)),
+            'IsRider'           => (int) $this->IsRider,
+            'IsPicker'          => (int) $this->IsPicker,
             'VehlcleType'       => ($this->VehlcleType) ? $this->VehlcleType : '',
-            'IsUploaded'        => $this->IsUploaded,
-            'RiderActive'       => $this->RiderActive,
+            'IsUploaded'        => (int) $this->IsUploaded,
+            'RiderActive'       => (int) $this->RiderActive,
             'Documents'         => DocumentResource::collection($this->Documents->where('DocumentActive', 1)),
         ];
     }

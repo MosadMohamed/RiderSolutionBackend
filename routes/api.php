@@ -32,9 +32,14 @@ Route::prefix('rider')->group(function () {
     Route::post('document/save', [RiderDocumentController::class, 'DocumentSave']);
 
     Route::post('/home', [RiderHomeController::class, 'Home']);
-    Route::post('/statistic', [RiderHomeController::class, 'RiderStatistic']);
+    Route::post('/requests', [RiderHomeController::class, 'RiderAllRequests']);
+    Route::post('/hirings', [RiderHomeController::class, 'RiderAllHirings']);
+    Route::post('/tasks', [RiderHomeController::class, 'RiderAllTasks']);
     Route::post('/request/send', [RiderHomeController::class, 'RiderRequest']);
     Route::post('/hiring/apply', [RiderHomeController::class, 'RiderHiringApply']);
     Route::post('/task/apply', [RiderHomeController::class, 'RiderTaskApply']);
+
+    Route::post('profile/edit', [RiderAuthController::class, 'EditProfile']);
+    Route::post('/myrequests', [RiderHomeController::class, 'RiderMyRequests']);
     Route::post('/complaint', [RiderHomeController::class, 'RiderComplaint']);
 });

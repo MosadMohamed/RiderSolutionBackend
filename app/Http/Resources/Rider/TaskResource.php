@@ -16,7 +16,7 @@ class TaskResource extends JsonResource
     {
         return [
             'IDTask'        => $this->IDTask,
-            'IDCompany'     => $this->IDCompany,
+            'IDCompany'     => (int) $this->IDCompany,
             'CompanyNameEn' => $this->Company->CompanyNameEn,
             'CompanyNameAr' => $this->Company->CompanyNameAr,
             'CompanyImage'  => asset('images/companies/' . $this->Company->CompanyImage),
@@ -25,7 +25,7 @@ class TaskResource extends JsonResource
             'TaskTimeFrom'  => $this->TaskTimeFrom,
             'TaskTimeEnd'   => $this->TaskTimeEnd,
             'TaskNote'      => $this->TaskNote,
-            'Is_Applied'    => ($this->Is_Applied) ? $this->Is_Applied : 0,
+            'Is_Applied'    => (int) ($this->Is_Applied) ? $this->Is_Applied : 0,
         ];
     }
 }

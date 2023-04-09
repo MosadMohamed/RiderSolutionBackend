@@ -4,30 +4,28 @@ namespace App\Http\Controllers\Rider;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Rider\CompanyResource;
-use App\Http\Resources\Rider\CountryResource;
 use App\Http\Resources\Rider\HiringResource;
-use App\Http\Resources\Rider\RiderResource;
 use App\Http\Resources\Rider\TaskResource;
 use App\Models\ActionBackLog;
 use App\Models\Company;
 use App\Models\Complaint;
-use App\Models\Country;
 use App\Models\Hiring;
 use App\Models\HiringApply;
-use App\Models\Office;
 use App\Models\Rider;
 use App\Models\RiderBlock;
-use App\Models\RiderDocument;
 use App\Models\RiderEmployed;
 use App\Models\RiderRequest;
 use App\Models\Task;
 use App\Models\TaskApply;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class RiderHomeController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Rider Home Screen
+    |--------------------------------------------------------------------------
+    */
     public function Home(Request $request)
     {
         $Rider = auth('rider')->user();
@@ -62,9 +60,9 @@ class RiderHomeController extends Controller
 
         foreach ($Companies as $Company) {
             if (in_array($Company->IDCompany, $Requests)) {
-                $Company['Is_Requisted'] = 1;
+                $Company['Is_Requested'] = 1;
             } else {
-                $Company['Is_Requisted'] = 0;
+                $Company['Is_Requested'] = 0;
             }
         }
         /****************************************************************************/
@@ -117,7 +115,12 @@ class RiderHomeController extends Controller
         ], 200);
     }
 
-    public function RiderStatistic(Request $request)
+    /*
+    |--------------------------------------------------------------------------
+    | Rider All Requests
+    |--------------------------------------------------------------------------
+    */
+    public function RiderAllRequests(Request $request)
     {
         $Rider = auth('rider')->user();
 
@@ -126,55 +129,149 @@ class RiderHomeController extends Controller
                 'Success'   => false,
                 'MessageEn' => 'Rider Not Found',
                 'MessageAr' => 'السائق مطلوب',
-                'MyCompany' => [],
-                'MyRequest' => [],
-                'MyHiring'  => [],
-                'MyTask'    => [],
+                'Company'   => [],
             ], 200);
         }
 
         $Rider = Rider::find($Rider->IDRider);
 
         $RiderEmployeds = RiderEmployed::where('IDRider', $Rider->IDRider)
-            ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();;
+            ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();
 
-        $MyCompany  = Company::whereIn('IDCompany', $RiderEmployeds)
-            ->where('CompanyActive', 1)->get();
+        $RiderBlocks = RiderBlock::where('IDRider', $Rider->IDRider)
+            ->where('RiderBlockActive', 1)->get()->pluck('IDCompany')->toArray();
 
         $Requests = RiderRequest::where('IDRider', $Rider->IDRider)
             ->where('RiderRequestAccept', 0)
             ->where('RiderRequestActive', 1)->get()->pluck('IDCompany')->toArray();
 
-        $MyRequest  = Company::whereIn('IDCompany', $Requests)
+        $Companies  = Company::whereNotIn('IDCompany', $RiderEmployeds)
+            ->whereNotIn('IDCompany', $RiderBlocks)
             ->where('CompanyActive', 1)->get();
+
+        foreach ($Companies as $Company) {
+            if (in_array($Company->IDCompany, $Requests)) {
+                $Company['Is_Requested'] = 1;
+            } else {
+                $Company['Is_Requested'] = 0;
+            }
+        }
+
+        return response([
+            'Success'   => true,
+            'MessageEn' => 'All Company',
+            'MessageAr' => 'كل الشركات',
+            'Company'   => CompanyResource::collection($Companies),
+        ], 200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rider All Hirings
+    |--------------------------------------------------------------------------
+    */
+    public function RiderAllHirings(Request $request)
+    {
+        $Rider = auth('rider')->user();
+
+        if (!$Rider) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Rider Not Found',
+                'MessageAr' => 'السائق مطلوب',
+                'Hiring'    => [],
+            ], 200);
+        }
+
+        $Rider = Rider::find($Rider->IDRider);
+
+        $RiderEmployeds = RiderEmployed::where('IDRider', $Rider->IDRider)
+            ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();
+
+        $RiderBlocks = RiderBlock::where('IDRider', $Rider->IDRider)
+            ->where('RiderBlockActive', 1)->get()->pluck('IDCompany')->toArray();
 
         $Applies = HiringApply::where('IDRider', $Rider->IDRider)
             ->where('HiringApplyAccept', 0)
             ->where('HiringApplyActive', 1)->get()->pluck('IDHiring')->toArray();
 
-        $MyHiring = Hiring::whereIn('IDHiring', $Applies)
+        $Hirings = Hiring::whereNotIn('IDCompany', $RiderEmployeds)
+            ->whereNotIn('IDCompany', $RiderBlocks)
             ->where('HiringApplied', 0)
             ->where('HiringActive', 1)->get();
+
+        foreach ($Hirings as $Hiring) {
+            if (in_array($Hiring->IDHiring, $Applies)) {
+                $Hiring['Is_Applied'] = 1;
+            } else {
+                $Hiring['Is_Applied'] = 0;
+            }
+        }
+
+        return response([
+            'Success'   => true,
+            'MessageEn' => 'All Hirings',
+            'MessageAr' => 'كل الوظائف',
+            'Hiring'    => HiringResource::collection($Hirings),
+        ], 200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rider All Tasks
+    |--------------------------------------------------------------------------
+    */
+    public function RiderAllTasks(Request $request)
+    {
+        $Rider = auth('rider')->user();
+
+        if (!$Rider) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Rider Not Found',
+                'MessageAr' => 'السائق مطلوب',
+                'Task'      => [],
+            ], 200);
+        }
+
+        $Rider = Rider::find($Rider->IDRider);
+
+        $RiderEmployeds = RiderEmployed::where('IDRider', $Rider->IDRider)
+            ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();
+
+        $RiderBlocks = RiderBlock::where('IDRider', $Rider->IDRider)
+            ->where('RiderBlockActive', 1)->get()->pluck('IDCompany')->toArray();
 
         $TApplies = TaskApply::where('IDRider', $Rider->IDRider)
             ->where('TaskApplyAccept', 0)
             ->where('TaskApplyActive', 1)->get()->pluck('IDTask')->toArray();
 
-        $MyTasks = Task::whereIn('IDTask', $TApplies)
+        $Tasks = Task::whereNotIn('IDCompany', $RiderEmployeds)
+            ->whereNotIn('IDCompany', $RiderBlocks)
             ->where('TaskApplied', 0)
             ->where('TaskActive', 1)->get();
 
+        foreach ($Tasks as $Task) {
+            if (in_array($Task->IDTask, $TApplies)) {
+                $Task['Is_Applied'] = 1;
+            } else {
+                $Task['Is_Applied'] = 0;
+            }
+        }
+
         return response([
             'Success'   => true,
-            'MessageEn' => 'Statistic Page',
-            'MessageAr' => 'صفحة الاحصائيات',
-            'MyCompany' => CompanyResource::collection($MyCompany),
-            'MyRequest' => CompanyResource::collection($MyRequest),
-            'MyHiring'  => HiringResource::collection($MyHiring),
-            'MyTask'    => TaskResource::collection($MyTasks),
+            'MessageEn' => 'All Tasks',
+            'MessageAr' => 'كل المهام',
+            'Task'      => TaskResource::collection($Tasks),
         ], 200);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Rider Make Request To Company
+    |--------------------------------------------------------------------------
+    */
     public function RiderRequest(Request $request)
     {
         $Rider = auth('rider')->user();
@@ -186,7 +283,7 @@ class RiderHomeController extends Controller
                 'MessageAr' => 'السائق مطلوب',
             ], 200);
         }
-
+        
         $Rider = Rider::find($Rider->IDRider);
 
         if (!$request->IDCompany) {
@@ -262,6 +359,11 @@ class RiderHomeController extends Controller
         ], 200);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Rider Make Apply To Company Hiring
+    |--------------------------------------------------------------------------
+    */
     public function RiderHiringApply(Request $request)
     {
         $Rider = auth('rider')->user();
@@ -349,6 +451,11 @@ class RiderHomeController extends Controller
         ], 200);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Rider Make Apply To Company Task
+    |--------------------------------------------------------------------------
+    */
     public function RiderTaskApply(Request $request)
     {
         $Rider = auth('rider')->user();
@@ -436,6 +543,74 @@ class RiderHomeController extends Controller
         ], 200);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Rider Requests Screen
+    |--------------------------------------------------------------------------
+    */
+    public function RiderMyRequests(Request $request)
+    {
+        $Rider = auth('rider')->user();
+
+        if (!$Rider) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Rider Not Found',
+                'MessageAr' => 'السائق مطلوب',
+                'MyCompany' => [],
+                'MyRequest' => [],
+                'MyHiring'  => [],
+                'MyTask'    => [],
+            ], 200);
+        }
+
+        $Rider = Rider::find($Rider->IDRider);
+
+        $RiderEmployeds = RiderEmployed::where('IDRider', $Rider->IDRider)
+            ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();;
+
+        $MyCompany  = Company::whereIn('IDCompany', $RiderEmployeds)
+            ->where('CompanyActive', 1)->get();
+
+        $Requests = RiderRequest::where('IDRider', $Rider->IDRider)
+            ->where('RiderRequestAccept', 0)
+            ->where('RiderRequestActive', 1)->get()->pluck('IDCompany')->toArray();
+
+        $MyRequest  = Company::whereIn('IDCompany', $Requests)
+            ->where('CompanyActive', 1)->get();
+
+        $Applies = HiringApply::where('IDRider', $Rider->IDRider)
+            ->where('HiringApplyAccept', 0)
+            ->where('HiringApplyActive', 1)->get()->pluck('IDHiring')->toArray();
+
+        $MyHiring = Hiring::whereIn('IDHiring', $Applies)
+            ->where('HiringApplied', 0)
+            ->where('HiringActive', 1)->get();
+
+        $TApplies = TaskApply::where('IDRider', $Rider->IDRider)
+            ->where('TaskApplyAccept', 0)
+            ->where('TaskApplyActive', 1)->get()->pluck('IDTask')->toArray();
+
+        $MyTasks = Task::whereIn('IDTask', $TApplies)
+            ->where('TaskApplied', 0)
+            ->where('TaskActive', 1)->get();
+
+        return response([
+            'Success'   => true,
+            'MessageEn' => 'Requests Page',
+            'MessageAr' => 'صفحة الطلبات',
+            'MyCompany' => CompanyResource::collection($MyCompany),
+            'MyRequest' => CompanyResource::collection($MyRequest),
+            'MyHiring'  => HiringResource::collection($MyHiring),
+            'MyTask'    => TaskResource::collection($MyTasks),
+        ], 200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rider Make Complaint
+    |--------------------------------------------------------------------------
+    */
     public function RiderComplaint(Request $request)
     {
         $Rider = auth('rider')->user();

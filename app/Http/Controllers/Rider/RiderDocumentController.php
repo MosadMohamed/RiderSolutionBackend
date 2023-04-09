@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Rider;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Rider\CountryResource;
-use App\Http\Resources\Rider\RiderResource;
 use App\Models\ActionBackLog;
-use App\Models\Country;
-use App\Models\Office;
 use App\Models\Rider;
 use App\Models\RiderDocument;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class RiderDocumentController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Rider Document Upload
+    |--------------------------------------------------------------------------
+    */
     public function DocumentUpload(Request $request)
     {
         $Rider = auth('rider')->user();
@@ -95,6 +95,11 @@ class RiderDocumentController extends Controller
         ], 200);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Rider Documents Save
+    |--------------------------------------------------------------------------
+    */
     public function DocumentSave(Request $request)
     {
         $Rider = auth('rider')->user();

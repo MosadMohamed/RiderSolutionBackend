@@ -11,4 +11,9 @@ class HiringApply extends Model
 
     protected $table = 'hiring_applies';
     protected $primaryKey = 'IDHiringApply';
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDRider');
+    }
 }

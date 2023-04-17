@@ -56,7 +56,8 @@ class RiderHomeController extends Controller
 
         $Companies  = Company::whereNotIn('IDCompany', $RiderEmployeds)
             ->whereNotIn('IDCompany', $RiderBlocks)
-            ->where('CompanyActive', 1)->get();
+            ->where('CompanyActive', 1)
+            ->take(5)->get();
 
         foreach ($Companies as $Company) {
             if (in_array($Company->IDCompany, $Requests)) {
@@ -75,7 +76,8 @@ class RiderHomeController extends Controller
         $Hirings = Hiring::whereNotIn('IDCompany', $RiderEmployeds)
             ->whereNotIn('IDCompany', $RiderBlocks)
             ->where('HiringApplied', 0)
-            ->where('HiringActive', 1)->get();
+            ->where('HiringActive', 1)
+            ->take(5)->get();
 
         foreach ($Hirings as $Hiring) {
             if (in_array($Hiring->IDHiring, $Applies)) {
@@ -94,7 +96,8 @@ class RiderHomeController extends Controller
         $Tasks = Task::whereNotIn('IDCompany', $RiderEmployeds)
             ->whereNotIn('IDCompany', $RiderBlocks)
             ->where('TaskApplied', 0)
-            ->where('TaskActive', 1)->get();
+            ->where('TaskActive', 1)
+            ->take(5)->get();
 
         foreach ($Tasks as $Task) {
             if (in_array($Task->IDTask, $TApplies)) {
@@ -283,7 +286,7 @@ class RiderHomeController extends Controller
                 'MessageAr' => 'السائق مطلوب',
             ], 200);
         }
-        
+
         $Rider = Rider::find($Rider->IDRider);
 
         if (!$request->IDCompany) {
@@ -557,10 +560,10 @@ class RiderHomeController extends Controller
                 'Success'   => false,
                 'MessageEn' => 'Rider Not Found',
                 'MessageAr' => 'السائق مطلوب',
-                'MyCompany' => [],
-                'MyRequest' => [],
-                'MyHiring'  => [],
-                'MyTask'    => [],
+                'Company'   => [],
+                'Request'   => [],
+                'Hiring'    => [],
+                'Task'      => [],
             ], 200);
         }
 
@@ -599,10 +602,10 @@ class RiderHomeController extends Controller
             'Success'   => true,
             'MessageEn' => 'Requests Page',
             'MessageAr' => 'صفحة الطلبات',
-            'MyCompany' => CompanyResource::collection($MyCompany),
-            'MyRequest' => CompanyResource::collection($MyRequest),
-            'MyHiring'  => HiringResource::collection($MyHiring),
-            'MyTask'    => TaskResource::collection($MyTasks),
+            'Company'   => CompanyResource::collection($MyCompany),
+            'Request'   => CompanyResource::collection($MyRequest),
+            'Hiring'    => HiringResource::collection($MyHiring),
+            'Task'      => TaskResource::collection($MyTasks),
         ], 200);
     }
 
@@ -629,7 +632,7 @@ class RiderHomeController extends Controller
             return response([
                 'Success'   => false,
                 'MessageEn' => 'Text Required',
-                'MessageAr' => 'النص مطلوي',
+                'MessageAr' => 'النص مطلوب',
             ], 200);
         }
 

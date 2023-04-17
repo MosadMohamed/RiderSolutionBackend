@@ -116,6 +116,7 @@ class RiderAuthController extends Controller
     */
     public function RiderRegister(Request $request)
     {
+        Log::info($request);
         if (!$request->IDOffice) {
             return response([
                 'Success'   => false,
@@ -214,7 +215,7 @@ class RiderAuthController extends Controller
             return response([
                 'Success'   => false,
                 'MessageEn' => 'Rider Already Exist',
-                'MessageAr' => 'السائق مطلوب بالفعل',
+                'MessageAr' => 'السائق موجود بالفعل',
                 'Token'     => '',
                 'Rider'     => [],
             ], 200);
@@ -247,6 +248,19 @@ class RiderAuthController extends Controller
         $Rider->IsRider         = ($request->IsRider) ? 1 : 0;
         $Rider->IsPicker        = ($request->IsPicker) ? 1 : 0;
         $Rider->FirebaseToken   = ($request->FirebaseToken) ? $request->FirebaseToken : null;
+        if ($request->IsRider) {
+            if ($request->VehlcleType == 'CAR' || $request->VehlcleType == 'Car' || $request->VehlcleType == 'سيارة') {
+                $Rider->VehlcleType = 'CAR';
+            } elseif ($request->VehlcleType == 'BICYCLE' || $request->VehlcleType == 'Bicycle' || $request->VehlcleType == 'دراجة') {
+                $Rider->VehlcleType = 'BICYCLE';
+            } elseif ($request->VehlcleType == 'MOTOCYCLE' || $request->VehlcleType == 'Motocycle' || $request->VehlcleType == 'دراجة نارية') {
+                $Rider->VehlcleType = 'MOTOCYCLE';
+            } elseif ($request->VehlcleType == 'WALKER' || $request->VehlcleType == 'Walker' || $request->VehlcleType == 'ووكر') {
+                $Rider->VehlcleType = 'WALKER';
+            } else {
+                $Rider->VehlcleType = null;
+            }
+        }
         $Rider->save();
 
         if (!$Token = auth('rider')->login($Rider)) {
@@ -329,7 +343,6 @@ class RiderAuthController extends Controller
                 'Rider'     => [],
             ], 200);
         }
-        Log::info($request);
 
         $Rider = Rider::find($Rider->IDRider);
 

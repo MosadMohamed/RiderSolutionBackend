@@ -49,7 +49,10 @@ class RiderDocumentController extends Controller
             ], 200);
         }
 
-        $TypesArray = ['ID_FRONT', 'ID_BACK', 'VEHICLE_FRONT', 'VEHICLE_BACK', 'LICENSE_FRONT', 'LICENSE_BACK'];
+        $TypesArray = [
+            'ID_FRONT', 'ID_BACK', 'PERSONAL_PHOTO', 'CRIMINAL_CHIP',
+            'VEHICLE_FRONT', 'VEHICLE_BACK', 'LICENSE_FRONT', 'LICENSE_BACK'
+        ];
         if (!in_array($request->DocumentType, $TypesArray)) {
             return response([
                 'Success'   => false,

@@ -16,4 +16,9 @@ class RiderRequest extends Model
     {
         return $this->belongsTo(Company::class, 'IDCompany');
     }
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDRider');
+    }
 }

@@ -11,4 +11,9 @@ class RiderBlock extends Model
 
     protected $table = 'rider_blocks';
     protected $primaryKey = 'IDRiderBlock';
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDRider');
+    }
 }

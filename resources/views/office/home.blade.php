@@ -1,0 +1,1 @@
+@extends('office.layouts.master')

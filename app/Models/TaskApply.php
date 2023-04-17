@@ -11,4 +11,9 @@ class TaskApply extends Model
 
     protected $table = 'task_applies';
     protected $primaryKey = 'IDTaskApply';
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDRider');
+    }
 }

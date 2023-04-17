@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Company\CompanyAuthController;
+use App\Http\Controllers\Company\CompanyBlockController;
 use App\Http\Controllers\Company\CompanyHiringController;
+use App\Http\Controllers\Company\CompanyRequestController;
+use App\Http\Controllers\Company\CompanyRiderController;
 use App\Http\Controllers\Company\CompanyTaskController;
 use App\Http\Controllers\Rider\RiderAuthController;
 use App\Http\Controllers\Rider\RiderDocumentController;
@@ -64,14 +67,14 @@ Route::prefix('company')->group(function () {
     Route::post('task/end',             [CompanyTaskController::class, 'CompanyEndTask']);
     Route::post('task/delete',          [CompanyTaskController::class, 'CompanyDeleteTask']);
 
-    Route::post('request',              [CompanyAuthController::class, 'CompanyRiderRequest']);
-    Route::post('request/accept',       [CompanyAuthController::class, 'CompanyAcceptRequest']);
-    Route::post('request/refuse',       [CompanyAuthController::class, 'CompanyRefuseRequest']);
+    Route::post('request',              [CompanyRequestController::class, 'CompanyRiderRequest']);
+    Route::post('request/accept',       [CompanyRequestController::class, 'CompanyAcceptRequest']);
+    Route::post('request/refuse',       [CompanyRequestController::class, 'CompanyRefuseRequest']);
 
-    Route::post('block',                [CompanyAuthController::class, 'CompanyBlock']);
-    Route::post('rider/block',          [CompanyAuthController::class, 'CompanyBlockRider']);
-    Route::post('rider/unblock',        [CompanyAuthController::class, 'CompanyUnBlockRider']);
+    Route::post('block',                [CompanyBlockController::class, 'CompanyBlock']);
+    Route::post('rider/block',          [CompanyBlockController::class, 'CompanyBlockRider']);
+    Route::post('rider/unblock',        [CompanyBlockController::class, 'CompanyUnBlockRider']);
 
-    Route::post('rider',                [CompanyAuthController::class, 'CompanyRider']);
-    Route::post('rider/delete',         [CompanyAuthController::class, 'CompanyDeleteRider']);
+    Route::post('rider',                [CompanyRiderController::class, 'CompanyRider']);
+    Route::post('rider/delete',         [CompanyRiderController::class, 'CompanyDeleteRider']);
 });

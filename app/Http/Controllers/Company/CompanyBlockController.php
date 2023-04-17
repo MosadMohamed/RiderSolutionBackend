@@ -8,6 +8,7 @@ use App\Models\ActionBackLog;
 use App\Models\Company;
 use App\Models\RiderBlock;
 use App\Models\RiderEmployed;
+use App\Models\RiderRequest;
 use Illuminate\Http\Request;
 
 class CompanyBlockController extends Controller
@@ -33,7 +34,7 @@ class CompanyBlockController extends Controller
         $Company = Company::find($Company->IDCompany);
 
         $RiderBlocks = RiderBlock::where('IDCompany', $Company->IDCompany)
-            ->where('RiderEmployedActive', 1)->get();
+            ->where('RiderBlockActive', 1)->get();
 
         return response([
             'Success'   => true,
@@ -77,6 +78,17 @@ class CompanyBlockController extends Controller
         foreach ($RiderEmployeds as $RiderEmployed) {
             $RiderEmployed->RiderEmployedActive = 0;
             $RiderEmployed->save();
+        }
+
+        $RiderBlockCheck = RiderBlock::where('IDRider', $request->IDRider)
+            ->where('IDCompany', $Company->IDCompany)->first();
+
+        if ($RiderBlockCheck) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Block Already Exist',
+                'MessageAr' => 'الحظر موجود بالفعل',
+            ], 200);
         }
 
         $RiderBlock = new RiderBlock();
@@ -126,7 +138,7 @@ class CompanyBlockController extends Controller
         }
 
         $RiderBlock = RiderBlock::where('IDRiderBlock', $request->IDRiderBlock)
-            ->where('RiderBlockActive', 1)->get();
+            ->where('RiderBlockActive', 1)->first();
 
         if (!$RiderBlock) {
             return response([
@@ -149,7 +161,7 @@ class CompanyBlockController extends Controller
         return response([
             'Success'   => true,
             'MessageEn' => 'Rider UnBlocked Successfuly',
-            'MessageAr' => 'تم ازالة الحظر السائق بنجاح',
+            'MessageAr' => 'تم ازالة الحظر بنجاح',
         ], 200);
     }
 }

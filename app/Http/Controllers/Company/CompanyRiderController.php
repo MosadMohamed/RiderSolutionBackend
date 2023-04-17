@@ -39,8 +39,8 @@ class CompanyRiderController extends Controller
 
         return response([
             'Success'   => true,
-            'MessageEn' => 'Company Hiring Page',
-            'MessageAr' => 'صفحة الوظائف للشركة',
+            'MessageEn' => 'Company Rider Page',
+            'MessageAr' => 'صفحة سواقين الشركة',
             'Rider'     => RiderResource::collection($Riders),
         ], 200);
     }
@@ -75,6 +75,14 @@ class CompanyRiderController extends Controller
         $RiderEmployeds = RiderEmployed::where('IDCompany', $Company->IDCompany)
             ->where('IDRider', $request->IDRider)
             ->where('RiderEmployedActive', 1)->get();
+
+        if (!count($RiderEmployeds)) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Rider Not Working In Company',
+                'MessageAr' => 'السائق لا يعمل في الشركة',
+            ], 200);
+        }
 
         foreach ($RiderEmployeds as $RiderEmployed) {
             $RiderEmployed->RiderEmployedActive = 0;

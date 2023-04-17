@@ -63,7 +63,7 @@ class CompanyRequestController extends Controller
 
         $Company = Company::find($Company->IDCompany);
 
-        if (!$request->IDIDRiderRequest) {
+        if (!$request->IDRiderRequest) {
             return response([
                 'Success'   => false,
                 'MessageEn' => 'Request Required',
@@ -71,7 +71,7 @@ class CompanyRequestController extends Controller
             ], 200);
         }
 
-        $RiderRequest = RiderRequest::where('IDIDRiderRequest', $request->IDIDRiderRequest)
+        $RiderRequest = RiderRequest::where('IDRiderRequest', $request->IDRiderRequest)
             ->where('RiderRequestAccept', 0)
             ->where('RiderRequestActive', 1)
             ->first();
@@ -125,7 +125,7 @@ class CompanyRequestController extends Controller
 
         $Company = Company::find($Company->IDCompany);
 
-        if (!$request->IDIDRiderRequest) {
+        if (!$request->IDRiderRequest) {
             return response([
                 'Success'   => false,
                 'MessageEn' => 'Request Required',
@@ -133,7 +133,7 @@ class CompanyRequestController extends Controller
             ], 200);
         }
 
-        $RiderRequest = RiderRequest::where('IDIDRiderRequest', $request->IDIDRiderRequest)
+        $RiderRequest = RiderRequest::where('IDRiderRequest', $request->IDRiderRequest)
             ->where('RiderRequestAccept', 0)
             ->where('RiderRequestActive', 1)
             ->first();

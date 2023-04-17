@@ -179,6 +179,7 @@ class CompanyTaskController extends Controller
         }
 
         $TaskApply = TaskApply::where('IDTaskApply', $request->IDTaskApply)
+            ->where('TaskApplyAccept', 0)
             ->where('TaskApplyActive', 1)->first();
 
         if (!$TaskApply) {

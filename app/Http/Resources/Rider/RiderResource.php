@@ -19,7 +19,7 @@ class RiderResource extends JsonResource
             'IDRider'           => $this->IDRider,
             'IDOffice'          => (int) $this->IDOffice,
             'IDCountry'         => (int) $this->IDCountry,
-            'RiderNaturalID'    => $this->RiderNaturalID,
+            'RiderNationalID'   => $this->RiderNationalID,
             'RiderName'         => $this->RiderName,
             'RiderPhone'        => $this->RiderPhone,
             'RiderEmail'        => $this->RiderEmail,

@@ -60,6 +60,23 @@
                     </a>
                 </div>
                 <!--  -->
+
+                <!-- Reports -->
+                <div class="menu-item pt-5">
+                    <div class="menu-content">
+                        <span class="menu-heading fw-bold text-uppercase fs-7">Reports</span>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'shift') ? 'active' : '' }}" href="{{ route('office.report.shift.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Shifts</span>
+                    </a>
+                </div>
+                <!--  -->
             </div>
         </div>
     </div>

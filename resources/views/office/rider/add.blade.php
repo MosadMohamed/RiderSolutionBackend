@@ -6,7 +6,7 @@
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
         <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Offices</h1>
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Add Rider</h1>
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <li class="breadcrumb-item text-muted">
                         <a href="{{ route('office.home') }}" class="text-muted text-hover-primary">Home</a>
@@ -14,7 +14,7 @@
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
                     </li>
-                    <li class="breadcrumb-item text-muted">Offices</li>
+                    <li class="breadcrumb-item text-muted">Rider</li>
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
                     </li>
@@ -40,7 +40,7 @@
                                 <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
                                     <span class="required">ID</span>
                                 </label>
-                                <input type="text" class="form-control form-control-solid" placeholder="ID" name="RiderNaturalID" value="{{ old('RiderNaturalID') }}" />
+                                <input type="text" class="form-control form-control-solid" placeholder="ID" name="RiderNationalID" value="{{ old('RiderNationalID') }}" />
                             </div>
 
                             <!-- Name -->

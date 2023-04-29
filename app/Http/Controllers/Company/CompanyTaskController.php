@@ -27,19 +27,30 @@ class CompanyTaskController extends Controller
                 'Success'   => false,
                 'MessageEn' => 'Company Not Found',
                 'MessageAr' => 'الشركة مطلوبة',
-                'Task'      => [],
+                'Current'   => [],
+                'Ended'     => [],
+                'Deleted'   => [],
             ], 200);
         }
 
         $Company = Company::find($Company->IDCompany);
 
-        $Tasks = Task::where('IDCompany', $Company->IDCompany)->get();
+        $CurrentTasks = Task::where('IDCompany', $Company->IDCompany)
+            ->where('TaskActive', 1)->where('TaskApplied', 0)->get();
+
+        $EndedTasks = Task::where('IDCompany', $Company->IDCompany)
+            ->where('TaskActive', 1)->where('TaskApplied', 1)->get();
+
+        $DeletedTasks = Task::where('IDCompany', $Company->IDCompany)
+            ->where('TaskActive', 0)->get();
 
         return response([
             'Success'   => true,
             'MessageEn' => 'Company Task Page',
             'MessageAr' => 'صفحة المهام للشركة',
-            'Task'      => CompanyTaskResource::collection($Tasks),
+            'Current'   => CompanyTaskResource::collection($CurrentTasks),
+            'Ended'     => CompanyTaskResource::collection($EndedTasks),
+            'Deleted'   => CompanyTaskResource::collection($DeletedTasks),
         ], 200);
     }
 
@@ -91,7 +102,7 @@ class CompanyTaskController extends Controller
             'Success'       => true,
             'MessageEn'     => 'Company Task Apply Page',
             'MessageAr'     => 'صفحة طلبات المهام للشركة',
-            'HiringApply'   => CompanyTaskApplyResource::collection($TaskApplies),
+            'TaskApply'     => CompanyTaskApplyResource::collection($TaskApplies),
         ], 200);
     }
 
@@ -285,8 +296,108 @@ class CompanyTaskController extends Controller
 
         return response([
             'Success'   => true,
-            'MessageEn' => 'Hiring Add Successfuly',
+            'MessageEn' => 'Task Add Successfuly',
             'MessageAr' => 'تم اضافة المهمة بنجاح',
+        ], 200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Company Edit Task
+    |--------------------------------------------------------------------------
+    */
+    public function CompanyEditTask(Request $request)
+    {
+        $Company = auth('company')->user();
+
+        if (!$Company) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Company Not Found',
+                'MessageAr' => 'الشركة مطلوبة',
+            ], 200);
+        }
+
+        $Company = Company::find($Company->IDCompany);
+
+        if (!$request->IDTask) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Task Required',
+                'MessageAr' => 'المهمة مطلوبة',
+            ], 200);
+        }
+
+        if (!$request->TaskType) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Task Type Required',
+                'MessageAr' => 'نوع المهمة مطلوب',
+            ], 200);
+        }
+
+        if (!$request->TaskDate) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Task Date Required',
+                'MessageAr' => 'تاريخ المهمة مطلوب',
+            ], 200);
+        }
+
+        if (!$request->TaskTimeFrom) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Task Time From Required',
+                'MessageAr' => 'وقت بدا المهمة مطلوب',
+            ], 200);
+        }
+
+        if (!$request->TaskTimeEnd) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Task Time End Required',
+                'MessageAr' => 'وقت نهاية المهمة مطلوب',
+            ], 200);
+        }
+
+        if (!$request->TaskNote) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Task Note Required',
+                'MessageAr' => 'وصف المهمة مطلوب',
+            ], 200);
+        }
+
+        $Task = Task::where('IDTask', $request->IDTask)
+            ->where('TaskApplied', 0)
+            ->where('TaskActive', 1)->first();
+
+        if (!$Task) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Task Not Found',
+                'MessageAr' => 'المهمة غير موجودة',
+            ], 200);
+        }
+
+        $Task->TaskType     = $request->TaskType;
+        $Task->TaskDate     = $request->TaskDate;
+        $Task->TaskTimeFrom = $request->TaskTimeFrom;
+        $Task->TaskTimeEnd  = $request->TaskTimeEnd;
+        $Task->TaskNote     = $request->TaskNote;
+        $Task->save();
+
+        ActionBackLog::create([
+            'UserType'          => 'COMPANY',
+            'IDUser'            => $Company->IDCompany,
+            'ActionBackLog'     => 'COMPANY_EDIT_TASK',
+            'ActionBackLogDesc' => 'Company Edit Task "' . $Task->IDTask . '"',
+        ]);
+
+        return response([
+            'Success'   => true,
+            'MessageEn' => 'Task End Successfuly',
+            'MessageAr' => 'تم تعديل المهمة بنجاح',
         ], 200);
     }
 

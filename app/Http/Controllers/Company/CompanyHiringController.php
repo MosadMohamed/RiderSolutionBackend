@@ -28,20 +28,31 @@ class CompanyHiringController extends Controller
                 'Success'   => false,
                 'MessageEn' => 'Company Not Found',
                 'MessageAr' => 'الشركة مطلوبة',
-                'Hiring'    => [],
+                'Current'   => [],
+                'Ended'     => [],
+                'Deleted'   => [],
             ], 200);
         }
 
         $Company = Company::find($Company->IDCompany);
 
 
-        $Hirings = Hiring::where('IDCompany', $Company->IDCompany)->get();
+        $CurrentHirings = Hiring::where('IDCompany', $Company->IDCompany)
+            ->where('HiringActive', 1)->where('HiringApplied', 0)->get();
+
+        $EndedHirings = Hiring::where('IDCompany', $Company->IDCompany)
+            ->where('HiringActive', 1)->where('HiringApplied', 1)->get();
+
+        $DeletedHirings = Hiring::where('IDCompany', $Company->IDCompany)
+            ->where('HiringActive', 0)->get();
 
         return response([
             'Success'   => true,
             'MessageEn' => 'Company Hiring Page',
             'MessageAr' => 'صفحة الوظائف للشركة',
-            'Hiring'    => CompanyHiringResource::collection($Hirings),
+            'Current'   => CompanyHiringResource::collection($CurrentHirings),
+            'Ended'     => CompanyHiringResource::collection($EndedHirings),
+            'Deleted'   => CompanyHiringResource::collection($DeletedHirings),
         ], 200);
     }
 
@@ -268,6 +279,80 @@ class CompanyHiringController extends Controller
             'Success'   => true,
             'MessageEn' => 'Hiring Add Successfuly',
             'MessageAr' => 'تم اضافة الوظيفة بنجاح',
+        ], 200);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Company Edit Hiring
+    |--------------------------------------------------------------------------
+    */
+    public function CompanyEditHiring(Request $request)
+    {
+        $Company = auth('company')->user();
+
+        if (!$Company) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Company Not Found',
+                'MessageAr' => 'الشركة مطلوبة',
+            ], 200);
+        }
+
+        $Company = Company::find($Company->IDCompany);
+
+        if (!$request->IDHiring) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Hiring Required',
+                'MessageAr' => 'الوظيفة مطلوبة',
+            ], 200);
+        }
+
+        if (!$request->HiringType) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Hiring Type Required',
+                'MessageAr' => 'نوع الوظيفة مطلوب',
+            ], 200);
+        }
+
+        if (!$request->HiringNote) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Hiring Note Required',
+                'MessageAr' => 'وصف الوظيفة مطلوب',
+            ], 200);
+        }
+
+        $Hiring = Hiring::where('IDHiring', $request->IDHiring)
+            ->where('HiringApplied', 0)
+            ->where('HiringActive', 1)->first();
+
+        if (!$Hiring) {
+            return response([
+                'Success'   => false,
+                'MessageEn' => 'Hiring Not Found',
+                'MessageAr' => 'الوظيفة غير موجودة',
+            ], 200);
+        }
+
+        $Hiring->HiringType = $request->HiringType;
+        $Hiring->HiringNote = $request->HiringNote;
+        $Hiring->save();
+
+
+        ActionBackLog::create([
+            'UserType'          => 'COMPANY',
+            'IDUser'            => $Company->IDCompany,
+            'ActionBackLog'     => 'COMPANY_EDIT_HIRING',
+            'ActionBackLogDesc' => 'Company Edit Hiring "' . $Hiring->IDHiring . '"',
+        ]);
+
+        return response([
+            'Success'   => true,
+            'MessageEn' => 'Hiring End Successfuly',
+            'MessageAr' => 'تم تعديل الوظيفة بنجاح',
         ], 200);
     }
 

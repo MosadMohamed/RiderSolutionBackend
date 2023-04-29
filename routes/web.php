@@ -4,7 +4,11 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Office\OfficeAuthController;
 use App\Http\Controllers\Office\OfficeHomeController;
+use App\Http\Controllers\Office\OfficeReportController;
 use App\Http\Controllers\Office\OfficeRiderController;
+use App\Models\RiderShift;
+use Carbon\CarbonInterval;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -83,5 +87,17 @@ Route::prefix('office')->name('office.')->group(function () {
             Route::post('store', [OfficeRiderController::class, 'RiderStore'])->name('store');
             Route::post('delete/{user}', [OfficeRiderController::class, 'RiderActive'])->name('delete');
         });
+
+        Route::prefix('report')->name('report.')->group(function () {
+            Route::get('shift', [OfficeReportController::class, 'ReportShiftList'])->name('shift.list');
+        });
     });
+});
+
+Route::get('/test', function () {
+    // $STR = 'Mosad Love Koky More';
+    // $STR = Crypt::encryptString($STR);
+    // // return var_dump($STR);
+    // $STR = Crypt::decryptString('eyJpdiI6InlsMW42dWVWaWJBQ3JDTkF6SkNSS3c9PSIsInZhbHVlIjoiMCtoYjJOcHcrOFpWQk1FR05HU0M3NnI2SUFxSXJHdWRMWjVHaEZOSnpXTT0iLCJtYWMiOiIwYzYwYjIwN2RmNDJlYjM0NDZlYzRiNzYxNDRhYTgzNzk5MjIxYTZmNjg4ODM4ZTE4NWY2N2M2MGE5ZGJmMmRhIiwidGFnIjoiIn0');
+    // return $STR;
 });

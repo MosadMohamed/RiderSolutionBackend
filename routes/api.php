@@ -6,10 +6,20 @@ use App\Http\Controllers\Company\CompanyHiringController;
 use App\Http\Controllers\Company\CompanyRequestController;
 use App\Http\Controllers\Company\CompanyRiderController;
 use App\Http\Controllers\Company\CompanyTaskController;
+use App\Http\Controllers\Integration\IntegrationAbsenceController;
+use App\Http\Controllers\Integration\IntegrationAcceptController;
+use App\Http\Controllers\Integration\IntegrationAccidentController;
+use App\Http\Controllers\Integration\IntegrationAnnualController;
+use App\Http\Controllers\Integration\IntegrationAuthController;
+use App\Http\Controllers\Integration\IntegrationBonusController;
+use App\Http\Controllers\Integration\IntegrationBreakController;
+use App\Http\Controllers\Integration\IntegrationFeedbackController;
+use App\Http\Controllers\Integration\IntegrationLateController;
+use App\Http\Controllers\Integration\IntegrationOrderController;
+use App\Http\Controllers\Integration\IntegrationShiftController;
 use App\Http\Controllers\Rider\RiderAuthController;
 use App\Http\Controllers\Rider\RiderDocumentController;
 use App\Http\Controllers\Rider\RiderHomeController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +31,12 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "api" middleware group. Make something great!
 |
+*/
+
+/*
+|--------------------------------------------------------------------------
+| Rider Routes
+|--------------------------------------------------------------------------
 */
 
 Route::prefix('rider')->group(function () {
@@ -46,6 +62,11 @@ Route::prefix('rider')->group(function () {
     Route::post('/complaint',           [RiderHomeController::class, 'RiderComplaint']);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Company Routes
+|--------------------------------------------------------------------------
+*/
 Route::prefix('company')->group(function () {
     Route::post('login',                [CompanyAuthController::class, 'CompanyLogin']);
     Route::post('register',             [CompanyAuthController::class, 'CompanyRegister']);
@@ -56,6 +77,7 @@ Route::prefix('company')->group(function () {
     Route::post('hiring/apply/accept',  [CompanyHiringController::class, 'CompanyAcceptHiring']);
     Route::post('hiring/apply/refuse',  [CompanyHiringController::class, 'CompanyRefuseHiring']);
     Route::post('hiring/add',           [CompanyHiringController::class, 'CompanyAddHiring']);
+    Route::post('hiring/edit',          [CompanyHiringController::class, 'CompanyEditHiring']);
     Route::post('hiring/end',           [CompanyHiringController::class, 'CompanyEndHiring']);
     Route::post('hiring/delete',        [CompanyHiringController::class, 'CompanyDeleteHiring']);
 
@@ -64,6 +86,7 @@ Route::prefix('company')->group(function () {
     Route::post('task/apply/accept',    [CompanyTaskController::class, 'CompanyAcceptTask']);
     Route::post('task/apply/refuse',    [CompanyTaskController::class, 'CompanyRefuseTask']);
     Route::post('task/add',             [CompanyTaskController::class, 'CompanyAddTask']);
+    Route::post('task/edit',            [CompanyTaskController::class, 'CompanyEditTask']);
     Route::post('task/end',             [CompanyTaskController::class, 'CompanyEndTask']);
     Route::post('task/delete',          [CompanyTaskController::class, 'CompanyDeleteTask']);
 
@@ -77,4 +100,33 @@ Route::prefix('company')->group(function () {
 
     Route::post('rider',                [CompanyRiderController::class, 'CompanyRider']);
     Route::post('rider/delete',         [CompanyRiderController::class, 'CompanyDeleteRider']);
+});
+
+/*
+|--------------------------------------------------------------------------
+|  Integration Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('integration')->group(function () {
+    Route::post('login',                [IntegrationAuthController::class, 'IntegrationLogin']);
+
+    Route::post('shift/add',            [IntegrationShiftController::class, 'IntegrationShiftAdd']);
+
+    Route::post('order/add',            [IntegrationOrderController::class, 'IntegrationOrderAdd']);
+
+    Route::post('accept/add',           [IntegrationAcceptController::class, 'IntegrationAcceptAdd']);
+
+    Route::post('break/add',            [IntegrationBreakController::class, 'IntegrationBreakAdd']);
+
+    Route::post('absence/add',          [IntegrationAbsenceController::class, 'IntegrationAbsenceAdd']);
+
+    Route::post('late/add',             [IntegrationLateController::class, 'IntegrationLateAdd']);
+
+    Route::post('accident/add',         [IntegrationAccidentController::class, 'IntegrationAccidentAdd']);
+
+    Route::post('annual/add',           [IntegrationAnnualController::class, 'IntegrationAnnualAdd']);
+
+    Route::post('bonus/add',            [IntegrationBonusController::class, 'IntegrationBonusAdd']);
+
+    Route::post('feedback/add',         [IntegrationFeedbackController::class, 'IntegrationFeedbackAdd']);
 });

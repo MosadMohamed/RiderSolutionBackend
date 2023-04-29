@@ -36,10 +36,10 @@ class RiderAuthController extends Controller
             ], 200);
         }
 
-        if (!$request->RiderNaturalID) {
+        if (!$request->RiderNationalID) {
             return response([
                 'Success'   => false,
-                'MessageEn' => 'Natural ID Required',
+                'MessageEn' => 'National ID Required',
                 'MessageAr' => 'الرقم القومي مطلوب',
                 'Token'     => '',
                 'Rider'     => [],
@@ -56,7 +56,7 @@ class RiderAuthController extends Controller
             ], 200);
         }
 
-        $Rider = Rider::where('RiderNaturalID', $request->RiderNaturalID)->first();
+        $Rider = Rider::where('RiderNationalID', $request->RiderNationalID)->first();
 
         if (!$Rider) {
             return response([
@@ -137,10 +137,10 @@ class RiderAuthController extends Controller
             ], 200);
         }
 
-        if (!$request->RiderNaturalID) {
+        if (!$request->RiderNationalID) {
             return response([
                 'Success'   => false,
-                'MessageEn' => 'Natural ID Required',
+                'MessageEn' => 'National ID Required',
                 'MessageAr' => 'الرقم القومي مطلوب',
                 'Token'     => '',
                 'Rider'     => [],
@@ -208,7 +208,7 @@ class RiderAuthController extends Controller
         }
 
         $RiderCheck = Rider::where('RiderPhone', $request->RiderPhone)
-            ->orWhere('RiderNaturalID', $request->RiderNaturalID)
+            ->orWhere('RiderNationalID', $request->RiderNationalID)
             ->orWhere('RiderEmail', $request->RiderEmail)->first();
 
         if ($RiderCheck) {
@@ -238,7 +238,7 @@ class RiderAuthController extends Controller
         $Rider = new Rider();
         $Rider->IDOffice        = $IDOffice;
         $Rider->IDCountry       = $IDCountry;
-        $Rider->RiderNaturalID  = $request->RiderNaturalID;
+        $Rider->RiderNationalID = $request->RiderNationalID;
         $Rider->RiderName       = $request->RiderName;
         $Rider->RiderPhone      = $request->RiderPhone;
         $Rider->RiderEmail      = $request->RiderEmail;

@@ -26,7 +26,7 @@ class OfficeRiderController extends Controller
     public function RiderStore(Request $request)
     {
         $request->validate([
-            'RiderNaturalID'    => ['required', 'unique:riders'],
+            'RiderNationalID'    => ['required', 'unique:riders'],
             'RiderName'         => ['required'],
             'RiderPhone'        => ['required', 'unique:riders'],
             'RiderPassword'     => ['required'],
@@ -38,7 +38,7 @@ class OfficeRiderController extends Controller
         $Rider = new Rider();
         $Rider->IDOffice        = $Office->IDOffice;
         $Rider->IDCountry       = 1;
-        $Rider->RiderNaturalID  = $request->RiderNaturalID;
+        $Rider->RiderNationalID = $request->RiderNationalID;
         $Rider->RiderName       = $request->RiderName;
         $Rider->RiderPhone      = $request->RiderPhone;
         $Rider->RiderPassword   = Hash::make($request->RiderPassword);

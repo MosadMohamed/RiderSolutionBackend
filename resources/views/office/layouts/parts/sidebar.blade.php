@@ -76,6 +76,87 @@
                         <span class="menu-title">Shifts</span>
                     </a>
                 </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'order') ? 'active' : '' }}" href="{{ route('office.report.order.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Orders</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'accident') ? 'active' : '' }}" href="{{ route('office.report.accident.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Accidents</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'annual') ? 'active' : '' }}" href="{{ route('office.report.annual.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Annuals</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'accept') ? 'active' : '' }}" href="{{ route('office.report.accept.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Accepts</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'absence') ? 'active' : '' }}" href="{{ route('office.report.absence.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Absences</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'late') ? 'active' : '' }}" href="{{ route('office.report.late.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Lates</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'bonus') ? 'active' : '' }}" href="{{ route('office.report.bonus.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Bonuss</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'break') ? 'active' : '' }}" href="{{ route('office.report.break.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Breaks</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'feedback') ? 'active' : '' }}" href="{{ route('office.report.feedback.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Feedbacks</span>
+                    </a>
+                </div>
                 <!--  -->
             </div>
         </div>

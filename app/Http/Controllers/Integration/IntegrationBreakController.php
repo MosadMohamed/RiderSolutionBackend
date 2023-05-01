@@ -28,14 +28,17 @@ class IntegrationBreakController extends Controller
 
         IntegrationHelper::RiderInComapnyCheck($Rider->IDRider, $Company->IDCompany);
 
+        $From = $request->BreakDate . ' ' . $request->BreakTimeStart;
+        $To   = $request->BreakDate . ' ' . $request->BreakTimeEnd;
+
         $Break = new RiderBreak();
         $Break->IDCompany           = $Company->IDCompany;
         $Break->IDRider             = $Rider->IDRider;
         $Break->BreakCompanyCode    = $request->BreakCompanyCode;
-        $Break->BreakDateStart      = $request->BreakDateStart;
-        $Break->BreakDateEnd        = $request->BreakDateEnd;
+        $Break->BreakDate           = $request->BreakDate;
         $Break->BreakTimeStart      = $request->BreakTimeStart;
         $Break->BreakTimeEnd        = $request->BreakTimeEnd;
+        $Break->BreakTotalSeconds   = IntegrationHelper::DifferenceTwoTime($From, $To);
         $Break->save();
 
         ActionBackLog::create([

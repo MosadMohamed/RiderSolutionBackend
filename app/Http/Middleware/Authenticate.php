@@ -14,9 +14,9 @@ class Authenticate extends Middleware
     protected function redirectTo(Request $request): ?string
     {
         if (Auth::guard('office')->check()) {
-            return route('office.home');
+            return route('office.login');
         } elseif (Auth::check()) {
-            return route('admin.home');
+            return route('admin.login');
         }
         return route('welcome');
     }

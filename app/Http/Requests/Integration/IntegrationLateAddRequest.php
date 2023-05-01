@@ -24,8 +24,7 @@ class IntegrationLateAddRequest extends FormRequest
         return [
             'IDRider'           => ['required', 'exists:riders,IDRider,RiderActive,1'],
             'LateCompanyCode'   => ['required'],
-            'LataDateStart'     => ['required', 'date_format:Y-m-d'],
-            'LateDateEnd'       => ['required', 'date_format:Y-m-d'],
+            'LateDate'          => ['required', 'date_format:Y-m-d'],
             'LateTimeStart'     => ['required', 'date_format:H:i:s'],
             'LateTimeEnd'       => ['required', 'date_format:H:i:s'],
         ];
@@ -39,13 +38,10 @@ class IntegrationLateAddRequest extends FormRequest
             // 
             'LateCompanyCode.required'     => 'LateCompanyCode Required',
             // 
-            'LataDateStart.required'       => 'LataDateStart Required',
-            'LataDateStart.date_format'    => 'LataDateStart Must Match The Format Y:m:d',
+            'LateDate.required'             => 'LateDate Required',
+            'LateDate.date_format'          => 'LateDate Must Match The Format Y:m:d',
             // 
-            'LateDateEnd.required'         => 'LateDateEnd Required',
-            'LateDateEnd.date_format'      => 'LateDateEnd Must Match The Format Y:m:d',
-            // 
-            'LateTimeStart.required'       => 'LateTimeStart Required',
+            'LateTimeStart.required'        => 'LateTimeStart Required',
             'LateTimeStart.date_format'    => 'LateTimeStart Must Match The Format H:i:s',
             // 
             'LateTimeEnd.required'         => 'LateTimeEnd Required',

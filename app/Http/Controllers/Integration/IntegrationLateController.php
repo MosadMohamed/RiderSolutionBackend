@@ -32,14 +32,17 @@ class IntegrationLateController extends Controller
 
         IntegrationHelper::RiderInComapnyCheck($Rider->IDRider, $Company->IDCompany);
 
+        $From = $request->LateDate . ' ' . $request->LateTimeStart;
+        $To   = $request->LateDate . ' ' . $request->LateTimeEnd;
+
         $Late = new RiderLate();
         $Late->IDCompany        = $Company->IDCompany;
         $Late->IDRider          = $Rider->IDRider;
         $Late->LateCompanyCode  = $request->LateCompanyCode;
-        $Late->LataDateStart    = $request->LataDateStart;
-        $Late->LateDateEnd      = $request->LateDateEnd;
+        $Late->LateDate         = $request->LateDate;
         $Late->LateTimeStart    = $request->LateTimeStart;
         $Late->LateTimeEnd      = $request->LateTimeEnd;
+        $Late->LateTotalSeconds = IntegrationHelper::DifferenceTwoTime($From, $To);
         $Late->save();
 
         ActionBackLog::create([

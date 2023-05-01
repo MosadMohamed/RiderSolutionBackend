@@ -6,7 +6,7 @@
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
         <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Shifts Report</h1>
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Annuals Report</h1>
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <li class="breadcrumb-item text-muted">
                         <a href="{{ route('office.home') }}" class="text-muted text-hover-primary">Home</a>
@@ -18,7 +18,7 @@
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
                     </li>
-                    <li class="breadcrumb-item text-muted">Shift</li>
+                    <li class="breadcrumb-item text-muted">Annual</li>
                 </ul>
             </div>
         </div>
@@ -28,7 +28,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-px text-center row">
-                        <form class="form row" action="{{ route('office.report.shift.list') }}" method="post" enctype="multipart/form-data">
+                        <form class="form row" action="{{ route('office.report.annual.list') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="d-flex flex-column mb-7 fv-row col-12 col-md-5">
                                 <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
@@ -73,7 +73,7 @@
                                         <td>{{ $Rider->RiderName }}</td>
                                         @foreach($Companies as $Company)
                                         <td>
-                                            {{ App\Helper\OfficeHelper::GetRiderShiftsHours($Rider->IDRider, $Company->IDCompany, $DateFrom, $DateTo) }}
+                                            {{ App\Helper\OfficeHelper::GetRiderAnnualsNumbers($Rider->IDRider, $Company->IDCompany, $DateFrom, $DateTo) }}
                                         </td>
                                         @endforeach
                                     </tr>

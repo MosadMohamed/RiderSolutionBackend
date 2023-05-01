@@ -24,8 +24,7 @@ class IntegrationBreakAddRequest extends FormRequest
         return [
             'IDRider'           => ['required', 'exists:riders,IDRider,RiderActive,1'],
             'BreakCompanyCode'  => ['required'],
-            'BreakDateStart'    => ['required', 'date_format:Y-m-d'],
-            'BreakDateEnd'      => ['required', 'date_format:Y-m-d'],
+            'BreakDate'    => ['required', 'date_format:Y-m-d'],
             'BreakTimeStart'    => ['required', 'date_format:H:i:s'],
             'BreakTimeEnd'      => ['required', 'date_format:H:i:s'],
         ];
@@ -39,11 +38,9 @@ class IntegrationBreakAddRequest extends FormRequest
             // 
             'BreakCompanyCode.required'     => 'BreakCompanyCode Required',
             // 
-            'BreakDateStart.required'       => 'BreakDateStart Required',
-            'BreakDateStart.date_format'    => 'BreakDateStart Must Match The Format Y:m:d',
-            // 
-            'BreakDateEnd.required'         => 'BreakDateEnd Required',
-            'BreakDateEnd.date_format'      => 'BreakDateEnd Must Match The Format Y:m:d',
+            'BreakDate.required'            => 'BreakDate Required',
+            'BreakDate.date_format'         => 'BreakDate Must Match The Format Y:m:d',
+           
             // 
             'BreakTimeStart.required'       => 'BreakTimeStart Required',
             'BreakTimeStart.date_format'    => 'BreakTimeStart Must Match The Format H:i:s',

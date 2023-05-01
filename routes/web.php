@@ -89,7 +89,35 @@ Route::prefix('office')->name('office.')->group(function () {
         });
 
         Route::prefix('report')->name('report.')->group(function () {
-            Route::get('shift', [OfficeReportController::class, 'ReportShiftList'])->name('shift.list');
+            Route::get('shift', [OfficeReportController::class, 'ReportList'])->name('shift.list');
+            Route::post('shift', [OfficeReportController::class, 'ReportList'])->name('shift.list');
+
+            Route::get('order', [OfficeReportController::class, 'ReportList'])->name('order.list');
+            Route::post('order', [OfficeReportController::class, 'ReportList'])->name('ordet.list');
+
+            Route::get('accept', [OfficeReportController::class, 'ReportList'])->name('accept.list');
+            Route::post('accept', [OfficeReportController::class, 'ReportList'])->name('accept.list');
+
+            Route::get('absence', [OfficeReportController::class, 'ReportList'])->name('absence.list');
+            Route::post('absence', [OfficeReportController::class, 'ReportList'])->name('absence.list');
+
+            Route::get('accident', [OfficeReportController::class, 'ReportList'])->name('accident.list');
+            Route::post('accident', [OfficeReportController::class, 'ReportList'])->name('accident.list');
+
+            Route::get('annual', [OfficeReportController::class, 'ReportList'])->name('annual.list');
+            Route::post('annual', [OfficeReportController::class, 'ReportList'])->name('annual.list');
+
+            Route::get('bonus', [OfficeReportController::class, 'ReportList'])->name('bonus.list');
+            Route::post('bonus', [OfficeReportController::class, 'ReportList'])->name('bonus.list');
+
+            Route::get('break', [OfficeReportController::class, 'ReportList'])->name('break.list');
+            Route::post('break', [OfficeReportController::class, 'ReportList'])->name('break.list');
+
+            Route::get('late', [OfficeReportController::class, 'ReportList'])->name('late.list');
+            Route::post('late', [OfficeReportController::class, 'ReportList'])->name('late.list');
+
+            Route::get('feedback', [OfficeReportController::class, 'ReportList'])->name('feedback.list');
+            Route::post('feedback', [OfficeReportController::class, 'ReportList'])->name('feedback.list');
         });
     });
 });

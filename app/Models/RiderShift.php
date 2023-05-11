@@ -11,4 +11,14 @@ class RiderShift extends Model
 
     protected $table = 'rider_shifts';
     protected $primaryKey = 'IDShift';
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDRider');
+    }
+
+    public function Company()
+    {
+        return $this->belongsTo(Company::class, 'IDCompany');
+    }
 }

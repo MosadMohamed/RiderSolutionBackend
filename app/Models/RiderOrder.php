@@ -11,4 +11,14 @@ class RiderOrder extends Model
 
     protected $table = 'rider_orders';
     protected $primaryKey = 'IDOrder';
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDRider');
+    }
+
+    public function Company()
+    {
+        return $this->belongsTo(Company::class, 'IDCompany');
+    }
 }

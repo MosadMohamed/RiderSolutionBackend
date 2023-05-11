@@ -11,4 +11,14 @@ class RiderFeedback extends Model
 
     protected $table = 'rider_feedbacks';
     protected $primaryKey = 'IDFeedback';
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDRider');
+    }
+
+    public function Company()
+    {
+        return $this->belongsTo(Company::class, 'IDCompany');
+    }
 }

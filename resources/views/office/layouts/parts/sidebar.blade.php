@@ -52,11 +52,20 @@
                 </div>
 
                 <div class="menu-item">
-                    <a class="menu-link {{ request()->segment(2) == 'admin' ? 'active' : '' }}" href="">
+                    <a class="menu-link {{ (request()->segment(2) == 'info' && request()->segment(3) == 'list') ? 'active' : '' }}" href="{{ route('office.info.list') }}">
                         <span class="menu-icon">
                             <i class="fa-solid fa-user-secret"></i>
                         </span>
-                        <span class="menu-title">Info</span>
+                        <span class="menu-title">Phones</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'complaint' && request()->segment(3) == 'list') ? 'active' : '' }}" href="{{ route('office.complaint.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Complaints</span>
                     </a>
                 </div>
                 <!--  -->

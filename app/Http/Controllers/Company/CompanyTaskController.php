@@ -280,7 +280,13 @@ class CompanyTaskController extends Controller
 
         $Task = new Task();
         $Task->IDCompany    = $Company->IDCompany;
-        $Task->TaskType     = $request->TaskType;
+
+        if ($request->TaskType == 'PICKER' || $request->TaskType == 'Picker' || $request->TaskType == 'بيكر') {
+            $Task->TaskType = 'PICKER';
+        } else {
+            $Task->TaskType = 'RIDER';
+        }
+
         $Task->TaskDate     = $request->TaskDate;
         $Task->TaskTimeFrom = $request->TaskTimeFrom;
         $Task->TaskTimeEnd  = $request->TaskTimeEnd;
@@ -380,7 +386,12 @@ class CompanyTaskController extends Controller
             ], 200);
         }
 
-        $Task->TaskType     = $request->TaskType;
+
+        if ($request->TaskType == 'PICKER' || $request->TaskType == 'Picker' || $request->TaskType == 'بيكر') {
+            $Task->TaskType = 'PICKER';
+        } else {
+            $Task->TaskType = 'RIDER';
+        }
         $Task->TaskDate     = $request->TaskDate;
         $Task->TaskTimeFrom = $request->TaskTimeFrom;
         $Task->TaskTimeEnd  = $request->TaskTimeEnd;

@@ -6,7 +6,7 @@
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
         <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Riders</h1>
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Complaints</h1>
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <li class="breadcrumb-item text-muted">
                         <a href="{{ route('office.home') }}" class="text-muted text-hover-primary">Home</a>
@@ -14,7 +14,7 @@
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
                     </li>
-                    <li class="breadcrumb-item text-muted">Riders</li>
+                    <li class="breadcrumb-item text-muted">Complaints</li>
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
                     </li>
@@ -37,30 +37,30 @@
                                 <thead>
                                     <tr style="white-space: nowrap;" class="fw-bold text-muted">
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Phone</th>
-                                        <th>Status</th>
+                                        <th>Text</th>
+                                        <th>Replied</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($Riders as $Rider)
+                                    <form action="{{ route('office.complaint.add') }}" method="post" enctype="multipart/form-data">
+                                        @csrf
+                                        <tr class="bg-secondary">
+                                            <td>+</td>
+                                            <td colspan="2">
+                                                <input type="text" class="form-control" placeholder="Complaint Text" name="ComplaintText">
+                                            </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-success btn-sm">Add</button>
+                                            </td>
+                                        </tr>
+                                    </form>
+                                    @foreach($OfficeComplaints as $OfficeComplaint)
                                     <tr style="white-space: nowrap;">
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $Rider->RiderName }}</td>
-                                        <td>{{ $Rider->RiderPhone }}</td>
-                                        <td>{{ $Rider->RiderActive }}</td>
-                                        <td>
-                                            <div class="d-flex justify-content-center flex-shrink-0">
-
-                                                <form action="{{ route('office.rider.delete', $Rider) }}" method="post">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm">
-                                                        <i class="fa fa-solid fa-trash text-danger"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
+                                        <td>{{ $OfficeComplaint->ComplaintText }}</td>
+                                        <td>{{ $OfficeComplaint->ComplaintReplied }}</td>
+                                        <td></td>
                                     </tr>
                                     @endforeach
                                 </tbody>

@@ -42,4 +42,9 @@ class Rider extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(RiderDocument::class, 'IDRider');
     }
+
+    public function CompanyWorking()
+    {
+        return $this->belongsTo(Company::class, 'RiderCompanyWorking');
+    }
 }

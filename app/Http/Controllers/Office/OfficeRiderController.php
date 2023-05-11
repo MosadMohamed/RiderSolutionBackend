@@ -13,8 +13,7 @@ class OfficeRiderController extends Controller
     public function RiderList()
     {
         $Office = Auth::guard('office')->user();
-        $Riders = Rider::where('IDOffice', $Office->IDOffice)
-            ->where('RiderActive', 1)->get();
+        $Riders = Rider::where('IDOffice', $Office->IDOffice)->get();
         return view('office.rider.list', compact('Riders'));
     }
 
@@ -41,9 +40,10 @@ class OfficeRiderController extends Controller
         $Rider->RiderNationalID = $request->RiderNationalID;
         $Rider->RiderName       = $request->RiderName;
         $Rider->RiderPhone      = $request->RiderPhone;
+        $Rider->RiderEmail      = $request->RiderEmail;
         $Rider->RiderPassword   = Hash::make($request->RiderPassword);
         $Rider->RiderBirthDate  = $request->RiderBirthDate;
-        $Rider->RiderGender     = 'MALE';
+        $Rider->RiderGender     = $request->RiderGender;
         $Rider->IsRider         = ($request->IsRider) ? 1 : 0;
         $Rider->IsPicker        = ($request->IsPicker) ? 1 : 0;
         if ($request->IsRider) {

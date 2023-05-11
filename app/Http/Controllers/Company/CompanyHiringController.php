@@ -263,7 +263,13 @@ class CompanyHiringController extends Controller
 
         $Hiring = new Hiring();
         $Hiring->IDCompany  = $Company->IDCompany;
-        $Hiring->HiringType = $request->HiringType;
+
+        if ($request->HiringType == 'PICKER' || $request->HiringType == 'Picker' || $request->HiringType == 'بيكر') {
+            $Hiring->HiringType = 'PICKER';
+        } else {
+            $Hiring->HiringType = 'RIDER';
+        }
+
         $Hiring->HiringNote = $request->HiringNote;
         $Hiring->save();
 
@@ -337,7 +343,11 @@ class CompanyHiringController extends Controller
             ], 200);
         }
 
-        $Hiring->HiringType = $request->HiringType;
+        if ($request->HiringType == 'PICKER' || $request->HiringType == 'Picker' || $request->HiringType == 'بيكر') {
+            $Hiring->HiringType = 'PICKER';
+        } else {
+            $Hiring->HiringType = 'RIDER';
+        }
         $Hiring->HiringNote = $request->HiringNote;
         $Hiring->save();
 

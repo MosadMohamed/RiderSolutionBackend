@@ -49,6 +49,8 @@ Route::prefix('rider')->group(function () {
     Route::post('document/upload',      [RiderDocumentController::class, 'DocumentUpload']);
     Route::post('document/save',        [RiderDocumentController::class, 'DocumentSave']);
 
+    Route::post('/statistic',           [RiderHomeController::class, 'Statistic']);
+
     Route::post('/home',                [RiderHomeController::class, 'Home']);
     Route::post('/requests',            [RiderHomeController::class, 'RiderAllRequests']);
     Route::post('/hirings',             [RiderHomeController::class, 'RiderAllHirings']);

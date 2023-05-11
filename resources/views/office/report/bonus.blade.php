@@ -63,17 +63,40 @@
                                     <tr style="white-space: nowrap;" class="fw-bold text-muted">
                                         <th>#</th>
                                         @foreach($Companies as $Company)
-                                        <th>{{ $Company->CompanyNameEn }}</th>
+                                        <th>
+                                            <form action="{{ route('office.report.bonus.details') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="IDCompany" value="{{ $Company->IDCompany }}">
+                                                <button class="fw-bold btn btn-sm m-0 p-1" type="submit">
+                                                    {{ $Company->CompanyNameEn }}
+                                                </button>
+                                            </form>
+                                        </th>
                                         @endforeach
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($Riders as $Rider)
                                     <tr style="white-space: nowrap;">
-                                        <td>{{ $Rider->RiderName }}</td>
+                                        <td>
+                                            <form action="{{ route('office.report.bonus.details') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="IDRider" value="{{ $Rider->IDRider }}">
+                                                <button class="fw-bold btn m-0 p-1" type="submit">
+                                                    {{ $Rider->RiderName }}
+                                                </button>
+                                            </form>
+                                        </td>
                                         @foreach($Companies as $Company)
                                         <td>
-                                            {{ App\Helper\OfficeHelper::GetRiderBonusNumbers($Rider->IDRider, $Company->IDCompany, $DateFrom, $DateTo) }}
+                                            <form action="{{ route('office.report.bonus.details') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="IDRider" value="{{ $Rider->IDRider }}">
+                                                <input type="hidden" name="IDCompany" value="{{ $Company->IDCompany }}">
+                                                <button class="fw-bold btn m-0 p-1" type="submit">
+                                                    {{ App\Helper\OfficeHelper::GetRiderBonusNumbers($Rider->IDRider, $Company->IDCompany, $DateFrom, $DateTo) }}
+                                                </button>
+                                            </form>
                                         </td>
                                         @endforeach
                                     </tr>

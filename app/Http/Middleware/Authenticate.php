@@ -11,11 +11,14 @@ class Authenticate extends Middleware
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      */
-    protected function redirectTo(Request $request): ?string
+    protected function redirectTo(Request $request, string ...$guards): ?string
     {
-        if (Auth::guard('office')->check()) {
+        $guards = empty($guards) ? [null] : $guards;
+        // dd(Auth::guard('office'));
+        
+        if (Auth::guard('office')) {
             return route('office.login');
-        } elseif (Auth::check()) {
+        } elseif (Auth::guard('web')) {
             return route('admin.login');
         }
         return route('welcome');

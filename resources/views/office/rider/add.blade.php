@@ -59,6 +59,14 @@
                                 <input type="text" class="form-control form-control-solid" placeholder="Phone" name="RiderPhone" value="{{ old('RiderPhone') }}" />
                             </div>
 
+                            <!-- Email -->
+                            <div class="d-flex flex-column mb-7 fv-row col-12 col-md-6">
+                                <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
+                                    <span class="required">Email</span>
+                                </label>
+                                <input type="text" class="form-control form-control-solid" placeholder="Email" name="RiderEmail" value="{{ old('RiderEmail') }}" />
+                            </div>
+
                             <!-- Password -->
                             <div class="d-flex flex-column mb-7 fv-row col-12 col-md-6">
                                 <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
@@ -73,6 +81,25 @@
                                     <span class="required">BirthDate</span>
                                 </label>
                                 <input type="date" class="form-control form-control-solid" placeholder="BirthDate" name="RiderBirthDate" value="{{ old('RiderBirthDate') }}" />
+                            </div>
+
+                            <!-- Gender -->
+                            <div class="d-flex flex-row mb-7 fv-row col-12 col-md-6 align-items-start justify-content-between">
+                                <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
+                                    <span class="required">Gender: </span>
+                                </label>
+                                <div class="d-flex flex-row mb-7 fv-row">
+                                    <input type="radio" name="RiderGender" value="MALE" />
+                                    <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
+                                        &nbsp;&nbsp;Male
+                                    </label>
+                                </div>
+                                <div class="d-flex flex-row mb-7 fv-row">
+                                    <input type="radio" name="RiderGender" value="FEMALE" />
+                                    <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
+                                        &nbsp;&nbsp;Female
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="clear-fix"></div>
@@ -105,17 +132,6 @@
                                     <option value="WALKER">WALKER</option>
                                 </select>
                             </div>
-
-                            <!--  -->
-                            <!-- Password -->
-                            <div class="d-flex flex-column mb-7 fv-row col-12 col-md-6">
-                                <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-                                    <span class="required">Password</span>
-                                </label>
-                                <input type="file" class="form-control form-control-solid" name="RiderPassword" />
-                            </div>
-
-                            <!--  -->
 
                             <!-- Submit -->
                             <div class="text-center pt-15">

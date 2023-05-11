@@ -40,12 +40,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         return redirect()->route('admin.login');
     });
 
-    Route::middleware('guest')->group(function () {
+    Route::middleware('guest:web')->group(function () {
         Route::get('login', [AuthController::class, 'AdminLogin'])->name('login');
         Route::post('login', [AuthController::class, 'AdminLoginSubmit'])->name('login.submit');
     });
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware('auth:web')->group(function () {
         Route::post('logout', [AuthController::class, 'AdminLogout'])->name('logout');
         // 
         Route::get('home', [HomeController::class, 'AdminHome'])->name('home');
@@ -85,39 +85,60 @@ Route::prefix('office')->name('office.')->group(function () {
             Route::get('list', [OfficeRiderController::class, 'RiderList'])->name('list');
             Route::get('add', [OfficeRiderController::class, 'RiderAdd'])->name('add');
             Route::post('store', [OfficeRiderController::class, 'RiderStore'])->name('store');
-            Route::post('delete/{user}', [OfficeRiderController::class, 'RiderActive'])->name('delete');
+            Route::post('delete/{rider}', [OfficeRiderController::class, 'RiderActive'])->name('delete');
+        });
+
+        Route::prefix('info')->name('info.')->group(function () {
+            Route::get('list', [OfficeHomeController::class, 'InfoList'])->name('list');
+            Route::post('add', [OfficeHomeController::class, 'InfoAdd'])->name('add');
+            Route::post('edit/{office_member}', [OfficeHomeController::class, 'InfoEdit'])->name('edit');
+        });
+
+        Route::prefix('complaint')->name('complaint.')->group(function () {
+            Route::get('list', [OfficeHomeController::class, 'ComplaintList'])->name('list');
+            Route::post('add', [OfficeHomeController::class, 'ComplaintAdd'])->name('add');
         });
 
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('shift', [OfficeReportController::class, 'ReportList'])->name('shift.list');
             Route::post('shift', [OfficeReportController::class, 'ReportList'])->name('shift.list');
+            Route::post('shift/details', [OfficeReportController::class, 'ReportDetails'])->name('shift.details');
 
             Route::get('order', [OfficeReportController::class, 'ReportList'])->name('order.list');
             Route::post('order', [OfficeReportController::class, 'ReportList'])->name('ordet.list');
+            Route::post('order/details', [OfficeReportController::class, 'ReportDetails'])->name('order.details');
 
             Route::get('accept', [OfficeReportController::class, 'ReportList'])->name('accept.list');
             Route::post('accept', [OfficeReportController::class, 'ReportList'])->name('accept.list');
+            Route::post('accept/details', [OfficeReportController::class, 'ReportDetails'])->name('accept.details');
 
             Route::get('absence', [OfficeReportController::class, 'ReportList'])->name('absence.list');
             Route::post('absence', [OfficeReportController::class, 'ReportList'])->name('absence.list');
+            Route::post('absence/details', [OfficeReportController::class, 'ReportDetails'])->name('absence.details');
 
             Route::get('accident', [OfficeReportController::class, 'ReportList'])->name('accident.list');
             Route::post('accident', [OfficeReportController::class, 'ReportList'])->name('accident.list');
+            Route::post('accident/details', [OfficeReportController::class, 'ReportDetails'])->name('accident.details');
 
             Route::get('annual', [OfficeReportController::class, 'ReportList'])->name('annual.list');
             Route::post('annual', [OfficeReportController::class, 'ReportList'])->name('annual.list');
+            Route::post('annual/details', [OfficeReportController::class, 'ReportDetails'])->name('annual.details');
 
             Route::get('bonus', [OfficeReportController::class, 'ReportList'])->name('bonus.list');
             Route::post('bonus', [OfficeReportController::class, 'ReportList'])->name('bonus.list');
+            Route::post('bonus/details', [OfficeReportController::class, 'ReportDetails'])->name('bonus.details');
 
             Route::get('break', [OfficeReportController::class, 'ReportList'])->name('break.list');
             Route::post('break', [OfficeReportController::class, 'ReportList'])->name('break.list');
+            Route::post('break/details', [OfficeReportController::class, 'ReportDetails'])->name('break.details');
 
             Route::get('late', [OfficeReportController::class, 'ReportList'])->name('late.list');
             Route::post('late', [OfficeReportController::class, 'ReportList'])->name('late.list');
+            Route::post('late/details', [OfficeReportController::class, 'ReportDetails'])->name('late.details');
 
             Route::get('feedback', [OfficeReportController::class, 'ReportList'])->name('feedback.list');
             Route::post('feedback', [OfficeReportController::class, 'ReportList'])->name('feedback.list');
+            Route::post('feedback/details', [OfficeReportController::class, 'ReportDetails'])->name('feedback.details');
         });
     });
 });

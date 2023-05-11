@@ -11,4 +11,14 @@ class RiderLate extends Model
 
     protected $table = 'rider_lates';
     protected $primaryKey = 'IDLate';
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDRider');
+    }
+
+    public function Company()
+    {
+        return $this->belongsTo(Company::class, 'IDCompany');
+    }
 }

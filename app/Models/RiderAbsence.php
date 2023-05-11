@@ -11,4 +11,14 @@ class RiderAbsence extends Model
 
     protected $table = 'rider_absences';
     protected $primaryKey = 'IDAbsence';
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDRider');
+    }
+
+    public function Company()
+    {
+        return $this->belongsTo(Company::class, 'IDCompany');
+    }
 }

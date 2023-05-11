@@ -11,4 +11,14 @@ class RiderBreak extends Model
 
     protected $table = 'rider_breaks';
     protected $primaryKey = 'IDBreak';
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDRider');
+    }
+
+    public function Company()
+    {
+        return $this->belongsTo(Company::class, 'IDCompany');
+    }
 }

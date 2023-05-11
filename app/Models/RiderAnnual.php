@@ -11,4 +11,14 @@ class RiderAnnual extends Model
 
     protected $table = 'rider_annuals';
     protected $primaryKey = 'IDAnnual';
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDRider');
+    }
+
+    public function Company()
+    {
+        return $this->belongsTo(Company::class, 'IDCompany');
+    }
 }

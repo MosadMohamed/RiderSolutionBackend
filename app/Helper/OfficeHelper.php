@@ -293,4 +293,33 @@ class OfficeHelper
         }
         return $H . ':' . $M . ':' . $S;
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Number System
+    |--------------------------------------------------------------------------
+    */
+    public static function NumberSystem($Num)
+    {
+        $K = 1000;
+        $M = 1000000;
+        $B = 1000000000;
+        $T = 1000000000000;
+        // "k" => 1000,"m" => 1000000,"b" => 1000000000,"t" => 1000000000000
+        if ($Num < $K) {
+            return $Num;
+        } elseif ($Num >= $K && $Num < $M) {
+            $Num = $Num / $K;
+            return (int) $Num . 'K';
+        } elseif ($Num >= $M && $Num < $B) {
+            $Num = $Num / $M;
+            return (int) $Num . 'M';
+        } elseif ($Num >= $B && $Num < $T) {
+            $Num = $Num / $B;
+            return (int) $Num . 'B';
+        } else {
+            $Num = $Num / $T;
+            return (int) $Num . 'T';
+        }
+    }
 }

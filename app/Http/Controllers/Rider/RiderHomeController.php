@@ -15,10 +15,10 @@ use App\Models\RiderAbsence;
 use App\Models\RiderAcceptOrder;
 use App\Models\RiderAccident;
 use App\Models\RiderAnnual;
-use App\Models\RiderBlock;
+use App\Models\CompanyBlock;
 use App\Models\RiderBonus;
 use App\Models\RiderBreak;
-use App\Models\RiderComplaint;
+use App\Models\Complaint;
 use App\Models\RiderEmployed;
 use App\Models\RiderLate;
 use App\Models\RiderOrder;
@@ -55,8 +55,8 @@ class RiderHomeController extends Controller
         $RiderEmployeds = RiderEmployed::where('IDRider', $Rider->IDRider)
             ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();
 
-        $RiderBlocks = RiderBlock::where('IDRider', $Rider->IDRider)
-            ->where('RiderBlockActive', 1)->get()->pluck('IDCompany')->toArray();
+        $CompanyBlocks = CompanyBlock::where('IDRider', $Rider->IDRider)
+            ->where('CompanyBlockActive', 1)->get()->pluck('IDCompany')->toArray();
 
         /****************************************************************************/
         $Requests = RiderRequest::where('IDRider', $Rider->IDRider)
@@ -64,7 +64,7 @@ class RiderHomeController extends Controller
             ->where('RiderRequestActive', 1)->get()->pluck('IDCompany')->toArray();
 
         $Companies  = Company::whereNotIn('IDCompany', $RiderEmployeds)
-            ->whereNotIn('IDCompany', $RiderBlocks)
+            ->whereNotIn('IDCompany', $CompanyBlocks)
             ->where('CompanyActive', 1)
             ->take(5)->get();
 
@@ -83,7 +83,7 @@ class RiderHomeController extends Controller
             ->where('HiringApplyActive', 1)->get()->pluck('IDHiring')->toArray();
 
         $Hirings = Hiring::whereNotIn('IDCompany', $RiderEmployeds)
-            ->whereNotIn('IDCompany', $RiderBlocks)
+            ->whereNotIn('IDCompany', $CompanyBlocks)
             ->where('HiringApplied', 0)
             ->where('HiringActive', 1)
             ->take(5)->get();
@@ -103,7 +103,7 @@ class RiderHomeController extends Controller
             ->where('TaskApplyActive', 1)->get()->pluck('IDTask')->toArray();
 
         $Tasks = Task::whereNotIn('IDCompany', $RiderEmployeds)
-            ->whereNotIn('IDCompany', $RiderBlocks)
+            ->whereNotIn('IDCompany', $CompanyBlocks)
             ->where('TaskApplied', 0)
             ->where('TaskActive', 1)
             ->take(5)->get();
@@ -127,9 +127,7 @@ class RiderHomeController extends Controller
             'Statistic' => [
                 'RiderWorking'      => (int) $Rider->RiderWorking,
                 'CompanyWorkingEn'  => ($Rider->CompanyWorking) ? $Rider->CompanyWorking->CompanyNameEn : 'Not Working Now',
-                'CompanyWorkingAr'  => ($Rider->CompanyWorking) ? $Rider->CompanyWorking->CompanyNameAn : 'لا تعمل الان',
-                'OrderTotal'        => $RiderOrderTotal,
-                'OrderCount'        => $RiderOrderCount,
+                'CompanyWorkingAr'  => ($Rider->CompanyWorking) ? $Rider->CompanyWorking->CompanyNameAr : 'لا تعمل الان',
             ],
             'Company'   => CompanyResource::collection($Companies),
             'Hiring'    => HiringResource::collection($Hirings),
@@ -160,15 +158,15 @@ class RiderHomeController extends Controller
         $RiderEmployeds = RiderEmployed::where('IDRider', $Rider->IDRider)
             ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();
 
-        $RiderBlocks = RiderBlock::where('IDRider', $Rider->IDRider)
-            ->where('RiderBlockActive', 1)->get()->pluck('IDCompany')->toArray();
+        $CompanyBlocks = CompanyBlock::where('IDRider', $Rider->IDRider)
+            ->where('CompanyBlockActive', 1)->get()->pluck('IDCompany')->toArray();
 
         $Requests = RiderRequest::where('IDRider', $Rider->IDRider)
             ->where('RiderRequestAccept', 0)
             ->where('RiderRequestActive', 1)->get()->pluck('IDCompany')->toArray();
 
         $Companies  = Company::whereNotIn('IDCompany', $RiderEmployeds)
-            ->whereNotIn('IDCompany', $RiderBlocks)
+            ->whereNotIn('IDCompany', $CompanyBlocks)
             ->where('CompanyActive', 1)->get();
 
         foreach ($Companies as $Company) {
@@ -210,15 +208,15 @@ class RiderHomeController extends Controller
         $RiderEmployeds = RiderEmployed::where('IDRider', $Rider->IDRider)
             ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();
 
-        $RiderBlocks = RiderBlock::where('IDRider', $Rider->IDRider)
-            ->where('RiderBlockActive', 1)->get()->pluck('IDCompany')->toArray();
+        $CompanyBlocks = CompanyBlock::where('IDRider', $Rider->IDRider)
+            ->where('CompanyBlockActive', 1)->get()->pluck('IDCompany')->toArray();
 
         $Applies = HiringApply::where('IDRider', $Rider->IDRider)
             ->where('HiringApplyAccept', 0)
             ->where('HiringApplyActive', 1)->get()->pluck('IDHiring')->toArray();
 
         $Hirings = Hiring::whereNotIn('IDCompany', $RiderEmployeds)
-            ->whereNotIn('IDCompany', $RiderBlocks)
+            ->whereNotIn('IDCompany', $CompanyBlocks)
             ->where('HiringApplied', 0)
             ->where('HiringActive', 1)->get();
 
@@ -261,15 +259,15 @@ class RiderHomeController extends Controller
         $RiderEmployeds = RiderEmployed::where('IDRider', $Rider->IDRider)
             ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();
 
-        $RiderBlocks = RiderBlock::where('IDRider', $Rider->IDRider)
-            ->where('RiderBlockActive', 1)->get()->pluck('IDCompany')->toArray();
+        $CompanyBlocks = CompanyBlock::where('IDRider', $Rider->IDRider)
+            ->where('CompanyBlockActive', 1)->get()->pluck('IDCompany')->toArray();
 
         $TApplies = TaskApply::where('IDRider', $Rider->IDRider)
             ->where('TaskApplyAccept', 0)
             ->where('TaskApplyActive', 1)->get()->pluck('IDTask')->toArray();
 
         $Tasks = Task::whereNotIn('IDCompany', $RiderEmployeds)
-            ->whereNotIn('IDCompany', $RiderBlocks)
+            ->whereNotIn('IDCompany', $CompanyBlocks)
             ->where('TaskApplied', 0)
             ->where('TaskActive', 1)->get();
 
@@ -319,8 +317,8 @@ class RiderHomeController extends Controller
         $RiderEmployeds = RiderEmployed::where('IDRider', $Rider->IDRider)
             ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();
 
-        $RiderBlocks = RiderBlock::where('IDRider', $Rider->IDRider)
-            ->where('RiderBlockActive', 1)->get()->pluck('IDCompany')->toArray();
+        $CompanyBlocks = CompanyBlock::where('IDRider', $Rider->IDRider)
+            ->where('CompanyBlockActive', 1)->get()->pluck('IDCompany')->toArray();
 
         $Company = Company::where('IDCompany', $request->IDCompany)
             ->where('CompanyActive', 1)->first();
@@ -341,7 +339,7 @@ class RiderHomeController extends Controller
             ], 200);
         }
 
-        if (in_array($Company->IDCompany, $RiderBlocks)) {
+        if (in_array($Company->IDCompany, $CompanyBlocks)) {
             return response([
                 'Success'   => false,
                 'MessageEn' => 'Blocked From This Company',
@@ -411,8 +409,8 @@ class RiderHomeController extends Controller
         $RiderEmployeds = RiderEmployed::where('IDRider', $Rider->IDRider)
             ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();
 
-        $RiderBlocks = RiderBlock::where('IDRider', $Rider->IDRider)
-            ->where('RiderBlockActive', 1)->get()->pluck('IDCompany')->toArray();
+        $CompanyBlocks = CompanyBlock::where('IDRider', $Rider->IDRider)
+            ->where('CompanyBlockActive', 1)->get()->pluck('IDCompany')->toArray();
 
         $Hiring = Hiring::where('IDHiring', $request->IDHiring)
             ->where('HiringActive', 1)->first();
@@ -433,7 +431,7 @@ class RiderHomeController extends Controller
             ], 200);
         }
 
-        if (in_array($Hiring->IDCompany, $RiderBlocks)) {
+        if (in_array($Hiring->IDCompany, $CompanyBlocks)) {
             return response([
                 'Success'   => false,
                 'MessageEn' => 'Blocked From This Company',
@@ -503,8 +501,8 @@ class RiderHomeController extends Controller
         $RiderEmployeds = RiderEmployed::where('IDRider', $Rider->IDRider)
             ->where('RiderEmployedActive', 1)->get()->pluck('IDCompany')->toArray();
 
-        $RiderBlocks = RiderBlock::where('IDRider', $Rider->IDRider)
-            ->where('RiderBlockActive', 1)->get()->pluck('IDCompany')->toArray();
+        $CompanyBlocks = CompanyBlock::where('IDRider', $Rider->IDRider)
+            ->where('CompanyBlockActive', 1)->get()->pluck('IDCompany')->toArray();
 
         $Task = Task::where('IDTask', $request->IDTask)
             ->where('TaskActive', 1)->first();
@@ -525,7 +523,7 @@ class RiderHomeController extends Controller
             ], 200);
         }
 
-        if (in_array($Task->IDCompany, $RiderBlocks)) {
+        if (in_array($Task->IDCompany, $CompanyBlocks)) {
             return response([
                 'Success'   => false,
                 'MessageEn' => 'Blocked From This Company',
@@ -655,8 +653,9 @@ class RiderHomeController extends Controller
             ], 200);
         }
 
-        $Complaint = new RiderComplaint();
-        $Complaint->IDRider         = $Rider->IDRider;
+        $Complaint = new Complaint();
+        $Complaint->UserType        = 'RIDER';
+        $Complaint->IDUser          = $Rider->IDRider;
         $Complaint->ComplaintText   = $request->ComplaintText;
         $Complaint->save();
 
@@ -688,20 +687,20 @@ class RiderHomeController extends Controller
                 'Success'   => false,
                 'MessageEn' => 'Rider Not Found',
                 'MessageAr' => 'السائق مطلوب',
-                'OrderTotal'    => 0,
-                'OrderCount'    => 0,
-                'OrderAccept'   => 0,
-                'OrderCancel'   => 0,
-                'BonusTotal'    => 0,
-                'BonusCount'    => 0,
-                'LateCount'     => 0,
-                'BreakCount'    => 0,
-                'AnnualCount'   => 0,
-                'AccidentCount' => 0,
-                'AbsenceCount'  => 0,
-                'AcceptCount'   => 0,
-                'AcceptAccept'  => 0,
-                'AcceptRefuse'  => 0,
+                'OrderTotal'    => '',
+                'OrderCount'    => '',
+                'OrderAccept'   => '',
+                'OrderCancel'   => '',
+                'BonusTotal'    => '',
+                'BonusCount'    => '',
+                'LateCount'     => '',
+                'BreakCount'    => '',
+                'AnnualCount'   => '',
+                'AccidentCount' => '',
+                'AbsenceCount'  => '',
+                'AcceptCount'   => '',
+                'AcceptAccept'  => '',
+                'AcceptRefuse'  => '',
                 'Company'       => [],
             ], 200);
         }
@@ -857,27 +856,27 @@ class RiderHomeController extends Controller
             'MessageEn'     => 'Statistics Page',
             'MessageAr'     => 'صفحة الاحصائيات',
             // 
-            'OrderTotal'    => $OrderTotal,
-            'OrderCount'    => $OrderCount,
-            'OrderAccept'   => $OrderAccept,
-            'OrderCancel'   => $OrderCancel,
-            // 
-            'BonusTotal'    => $BonusTotal,
-            'BonusCount'    => $BonusCount,
-            // 
-            'LateCount'     => $LateCount,
-            // 
-            'BreakCount'    => $BreakCount,
-            // 
-            'AnnualCount'   => $AnnualCount,
-            // 
-            'AccidentCount' => $AccidentCount,
-            // 
-            'AbsenceCount'  => $AbsenceCount,
-            // 
-            'AcceptCount'   => $AcceptCount,
-            'AcceptAccept'  => $AcceptAccept,
-            'AcceptRefuse'  => $AcceptRefuse,
+            'OrderTotal'    => (string)$OrderTotal,
+            'OrderCount'    => (string)$OrderCount,
+            'OrderAccept'   => (string)$OrderAccept,
+            'OrderCancel'   => (string)$OrderCancel,
+            //
+            'BonusTotal'    => (string)$BonusTotal,
+            'BonusCount'    => (string)$BonusCount,
+            //
+            'LateCount'     => (string)$LateCount,
+            //
+            'BreakCount'    => (string)$BreakCount,
+            //
+            'AbsenceCount'  => (string)$AbsenceCount,
+            //
+            'AnnualCount'   => (string)$AnnualCount,
+            //
+            'AccidentCount' => (string)$AccidentCount,
+            //
+            'AcceptCount'   => (string)$AcceptCount,
+            'AcceptAccept'  => (string)$AcceptAccept,
+            'AcceptRefuse'  => (string)$AcceptRefuse,
             // 
             // 'Company'       => CompanyResource::collection($MyCompany),
         ], 200);

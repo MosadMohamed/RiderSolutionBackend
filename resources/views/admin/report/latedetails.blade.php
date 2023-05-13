@@ -1,4 +1,4 @@
-@extends('office.layouts.master')
+@extends('admin.layouts.master')
 
 @section('main')
 
@@ -6,10 +6,10 @@
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
         <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Absences Details Report</h1>
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Lates Details Report</h1>
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <li class="breadcrumb-item text-muted">
-                        <a href="{{ route('office.home') }}" class="text-muted text-hover-primary">Home</a>
+                        <a href="{{ route('admin.home') }}" class="text-muted text-hover-primary">Home</a>
                     </li>
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
@@ -22,7 +22,7 @@
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
                     </li>
-                    <li class="breadcrumb-item text-muted">Absences</li>
+                    <li class="breadcrumb-item text-muted">Lates</li>
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
                     </li>
@@ -36,7 +36,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-px text-center row">
-                        <form class="form row" action="{{ route('office.report.absence.details') }}" method="post" enctype="multipart/form-data">
+                        <form class="form row" action="{{ route('admin.report.late.details') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="IDCompany" value="{{ $IDCompany }}">
                             <input type="hidden" name="IDRider" value="{{ $IDRider }}">
@@ -62,7 +62,7 @@
             <div class="card">
                 <div class="card-body">
 
-                    @include('office.message')
+                    @include('admin.message')
 
                     <div class="card-px text-center pb-15">
 
@@ -73,28 +73,34 @@
                                         <th>#</th>
                                         <th>Rider</th>
                                         <th>Company</th>
-                                        <th>Date</th>
+                                        <th>Start</th>
+                                        <th>End</th>
+                                        <th>AVG</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($Absences as $Absence)
+                                    @foreach($Lates as $Late)
                                     <tr style="white-space: nowrap;">
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
-                                            {{ $Absence->Rider->RiderName }}
+                                            {{ $Late->Rider->RiderName }}_<span class="text-success">{{ $Late->Rider->Office->OfficeName }}</span>
                                         </td>
                                         <td>
-                                            <img src="{{ asset('images/companies/' . $Absence->Company->CompanyImage) }}" width="50">
-                                            {{ $Absence->Company->CompanyNameEn }}
+                                            <img src="{{ asset('images/companies/' . $Late->Company->CompanyImage) }}" width="50">
+                                            {{ $Late->Company->CompanyNameEn }}
                                         </td>
-                                        <td>{{ $Absence->AbsenceDate }}</td>
+                                        <td>{{ $Late->LateDate }} {{ $Late->LateTimeStart }}</td>
+                                        <td>{{ $Late->LateDate }} {{ $Late->LateTimeEnd }}</td>
+                                        <td>{{ App\Helper\OfficeHelper::GetHoursBySeconds($Late->LateTotalSeconds) }}</td>
                                     </tr>
                                     @endforeach
                                     <tr style="white-space: nowrap;">
                                         <td>#</td>
                                         <td>Total</td>
                                         <td>-</td>
-                                        <td>{{ $Absences->count() }}</td>
+                                        <td>-</td>
+                                        <td>{{ $Lates->count() }}</td>
+                                        <td>{{ App\Helper\OfficeHelper::GetHoursBySeconds($Lates->sum('LateTotalSeconds')) }}</td>
                                     </tr>
                                 </tbody>
                             </table>

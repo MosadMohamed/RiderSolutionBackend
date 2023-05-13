@@ -16,7 +16,7 @@ class CompanyBlockResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'IDRiderBlock'  => $this->IDRiderBlock,
+            'IDCompanyBlock'  => $this->IDCompanyBlock,
             'Rider'         => RiderResource::make($this->Rider),
         ];
     }

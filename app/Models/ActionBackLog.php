@@ -19,4 +19,9 @@ class ActionBackLog extends Model
     protected $hidden = [
         'created_at', 'updated_at'
     ];
+
+    public function Rider()
+    {
+        return $this->belongsTo(Rider::class, 'IDUser', 'IDRider');
+    }
 }

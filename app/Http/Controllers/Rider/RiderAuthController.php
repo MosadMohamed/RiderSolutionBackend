@@ -97,7 +97,7 @@ class RiderAuthController extends Controller
             'UserType'          => 'RIDER',
             'IDUser'            => $Rider->IDRider,
             'ActionBackLog'     => 'RIDER_LOGIN',
-            'ActionBackLogDesc' => 'Rider Login By Token "' . $Token . '"',
+            'ActionBackLogDesc' => 'Rider Login',
         ]);
 
         return response([
@@ -277,7 +277,7 @@ class RiderAuthController extends Controller
             'UserType'          => 'RIDER',
             'IDUser'            => $Rider->IDRider,
             'ActionBackLog'     => 'RIDER_REGISTER',
-            'ActionBackLogDesc' => 'Rider Register By Token "' . $Token . '"',
+            'ActionBackLogDesc' => 'Rider Register',
         ]);
 
         return response([

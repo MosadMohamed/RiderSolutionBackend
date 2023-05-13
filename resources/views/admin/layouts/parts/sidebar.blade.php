@@ -38,7 +38,7 @@
                         <span class="menu-icon">
                             <i class="fa-solid fa-user-secret"></i>
                         </span>
-                        <span class="menu-title">Riders</span>
+                        <span class="menu-title"><del>Riders</del></span>
                     </a>
                 </div>
 
@@ -47,7 +47,7 @@
                         <span class="menu-icon">
                             <i class="fa-solid fa-user-tie"></i>
                         </span>
-                        <span class="menu-title">Requests</span>
+                        <span class="menu-title"><del>Requests</del></span>
                     </a>
                 </div>
 
@@ -56,7 +56,7 @@
                         <span class="menu-icon">
                             <i class="fa-solid fa-user-pen"></i>
                         </span>
-                        <span class="menu-title">Hirings</span>
+                        <span class="menu-title"><del>Hirings</del></span>
                     </a>
                 </div>
 
@@ -65,7 +65,7 @@
                         <span class="menu-icon">
                             <i class="fa-solid fa-user-pen"></i>
                         </span>
-                        <span class="menu-title">Tasks</span>
+                        <span class="menu-title"><del>Tasks</del></span>
                     </a>
                 </div>
                 <!--  -->
@@ -82,7 +82,7 @@
                         <span class="menu-icon">
                             <i class="fa-solid fa-gear"></i>
                         </span>
-                        <span class="menu-title">Companies</span>
+                        <span class="menu-title"><del>Companies</del></span>
                     </a>
                 </div>
 
@@ -91,7 +91,7 @@
                         <span class="menu-icon">
                             <i class="fa-solid fa-gear"></i>
                         </span>
-                        <span class="menu-title">Hirings</span>
+                        <span class="menu-title"><del>Hirings</del></span>
                     </a>
                 </div>
 
@@ -100,7 +100,7 @@
                         <span class="menu-icon">
                             <i class="fa-solid fa-gear"></i>
                         </span>
-                        <span class="menu-title">Tasks</span>
+                        <span class="menu-title"><del>Tasks</del></span>
                     </a>
                 </div>
                 <!--  -->
@@ -117,7 +117,7 @@
                         <span class="menu-icon">
                             <i class="fa-solid fa-gear"></i>
                         </span>
-                        <span class="menu-title">Offices</span>
+                        <span class="menu-title"><del>Offices</del></span>
                     </a>
                 </div>
                 <!--  -->
@@ -130,11 +130,29 @@
                 </div>
 
                 <div class="menu-item">
-                    <a class="menu-link {{ request()->segment(2) == 'NoData' ? 'active' : '' }}" href="">
+                    <a class="menu-link {{ (request()->segment(2) == 'complaint' && request()->segment(3) == 'rider') ? 'active' : '' }}" href="{{ route('admin.complaint.rider.list') }}">
                         <span class="menu-icon">
                             <i class="fa-solid fa-gear"></i>
                         </span>
-                        <span class="menu-title">Complaints</span>
+                        <span class="menu-title">Rider Complaints</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'complaint' && request()->segment(3) == 'office') ? 'active' : '' }}" href="{{ route('admin.complaint.office.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-gear"></i>
+                        </span>
+                        <span class="menu-title">Office Complaints</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'complaint' && request()->segment(3) == 'company') ? 'active' : '' }}" href="{{ route('admin.complaint.company.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-gear"></i>
+                        </span>
+                        <span class="menu-title">Company Complaints</span>
                     </a>
                 </div>
                 <!--  -->
@@ -147,20 +165,153 @@
                 </div>
 
                 <div class="menu-item">
-                    <a class="menu-link {{ request()->segment(2) == 'NoData' ? 'active' : '' }}" href="">
+                    <a class="menu-link {{ request()->segment(2) == 'country' ? 'active' : '' }}" href="{{ route('admin.country.list') }}">
                         <span class="menu-icon">
                             <i class="fa-solid fa-gear"></i>
                         </span>
                         <span class="menu-title">Countries</span>
                     </a>
                 </div>
+                <!--  -->
+
+                <!-- Reports -->
+                <div class="menu-item pt-5">
+                    <div class="menu-content">
+                        <span class="menu-heading fw-bold text-uppercase fs-7">Reports</span>
+                    </div>
+                </div>
 
                 <div class="menu-item">
-                    <a class="menu-link {{ request()->segment(2) == 'NoData' ? 'active' : '' }}" href="">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'shift') ? 'active' : '' }}" href="{{ route('admin.report.shift.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Shifts</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'order') ? 'active' : '' }}" href="{{ route('admin.report.order.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Orders</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'accident') ? 'active' : '' }}" href="{{ route('admin.report.accident.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Accidents</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'annual') ? 'active' : '' }}" href="{{ route('admin.report.annual.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Annuals</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'accept') ? 'active' : '' }}" href="{{ route('admin.report.accept.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Accepts</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'absence') ? 'active' : '' }}" href="{{ route('admin.report.absence.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Absences</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'late') ? 'active' : '' }}" href="{{ route('admin.report.late.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Lates</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'bonus') ? 'active' : '' }}" href="{{ route('admin.report.bonus.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Bonuss</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'break') ? 'active' : '' }}" href="{{ route('admin.report.break.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Breaks</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'report' && request()->segment(3) == 'feedback') ? 'active' : '' }}" href="{{ route('admin.report.feedback.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">Feedbacks</span>
+                    </a>
+                </div>
+                <!--  -->
+
+                <!-- Action Logs -->
+                <div class="menu-item pt-5">
+                    <div class="menu-content">
+                        <span class="menu-heading fw-bold text-uppercase fs-7">Action Logs</span>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'log' && request()->segment(3) == 'rider') ? 'active' : '' }}" href="{{ route('admin.log.rider.list') }}">
                         <span class="menu-icon">
                             <i class="fa-solid fa-gear"></i>
                         </span>
-                        <span class="menu-title">Action Log</span>
+                        <span class="menu-title">Rider Log</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'log' && request()->segment(3) == 'office') ? 'active' : '' }}" href="{{ route('admin.log.office.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-gear"></i>
+                        </span>
+                        <span class="menu-title">Office Log</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'log' && request()->segment(3) == 'company') ? 'active' : '' }}" href="{{ route('admin.log.company.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-gear"></i>
+                        </span>
+                        <span class="menu-title">Company Log</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'log' && request()->segment(3) == 'integration') ? 'active' : '' }}" href="{{ route('admin.log.integration.list') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-gear"></i>
+                        </span>
+                        <span class="menu-title">Integration Log</span>
                     </a>
                 </div>
                 <!--  -->

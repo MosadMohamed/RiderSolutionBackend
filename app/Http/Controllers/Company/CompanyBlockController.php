@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Company\CompanyBlockResource;
 use App\Models\ActionBackLog;
 use App\Models\Company;
-use App\Models\RiderBlock;
+use App\Models\CompanyBlock;
 use App\Models\RiderEmployed;
 use App\Models\RiderRequest;
 use Illuminate\Http\Request;
@@ -33,14 +33,14 @@ class CompanyBlockController extends Controller
 
         $Company = Company::find($Company->IDCompany);
 
-        $RiderBlocks = RiderBlock::where('IDCompany', $Company->IDCompany)
-            ->where('RiderBlockActive', 1)->get();
+        $CompanyBlocks = CompanyBlock::where('IDCompany', $Company->IDCompany)
+            ->where('CompanyBlockActive', 1)->get();
 
         return response([
             'Success'   => true,
             'MessageEn' => 'Company Block Page',
             'MessageAr' => 'صفحة الحظر للشركة',
-            'Block'     => CompanyBlockResource::collection($RiderBlocks),
+            'Block'     => CompanyBlockResource::collection($CompanyBlocks),
         ], 200);
     }
 
@@ -80,10 +80,10 @@ class CompanyBlockController extends Controller
             $RiderEmployed->save();
         }
 
-        $RiderBlockCheck = RiderBlock::where('IDRider', $request->IDRider)
+        $CompanyBlockCheck = CompanyBlock::where('IDRider', $request->IDRider)
             ->where('IDCompany', $Company->IDCompany)->first();
 
-        if ($RiderBlockCheck) {
+        if ($CompanyBlockCheck) {
             return response([
                 'Success'   => false,
                 'MessageEn' => 'Block Already Exist',
@@ -91,10 +91,10 @@ class CompanyBlockController extends Controller
             ], 200);
         }
 
-        $RiderBlock = new RiderBlock();
-        $RiderBlock->IDRider    = $request->IDRider;
-        $RiderBlock->IDCompany  = $Company->IDCompany;
-        $RiderBlock->save();
+        $CompanyBlock = new CompanyBlock();
+        $CompanyBlock->IDRider    = $request->IDRider;
+        $CompanyBlock->IDCompany  = $Company->IDCompany;
+        $CompanyBlock->save();
 
         ActionBackLog::create([
             'UserType'          => 'COMPANY',
@@ -129,7 +129,7 @@ class CompanyBlockController extends Controller
 
         $Company = Company::find($Company->IDCompany);
 
-        if (!$request->IDRiderBlock) {
+        if (!$request->IDCompanyBlock) {
             return response([
                 'Success'   => false,
                 'MessageEn' => 'Block Requirde',
@@ -137,10 +137,10 @@ class CompanyBlockController extends Controller
             ], 200);
         }
 
-        $RiderBlock = RiderBlock::where('IDRiderBlock', $request->IDRiderBlock)
-            ->where('RiderBlockActive', 1)->first();
+        $CompanyBlock = CompanyBlock::where('IDCompanyBlock', $request->IDCompanyBlock)
+            ->where('CompanyBlockActive', 1)->first();
 
-        if (!$RiderBlock) {
+        if (!$CompanyBlock) {
             return response([
                 'Success'   => false,
                 'MessageEn' => 'Block Not Found',
@@ -148,14 +148,14 @@ class CompanyBlockController extends Controller
             ], 200);
         }
 
-        $RiderBlock->RiderBlockActive = 0;
-        $RiderBlock->save();
+        $CompanyBlock->CompanyBlockActive = 0;
+        $CompanyBlock->save();
 
         ActionBackLog::create([
             'UserType'          => 'COMPANY',
             'IDUser'            => $Company->IDCompany,
             'ActionBackLog'     => 'COMPANY_UNBLOCK_RIDER',
-            'ActionBackLogDesc' => 'Company UnBlock Rider "' . $RiderBlock->IDRider . '"',
+            'ActionBackLogDesc' => 'Company UnBlock Rider "' . $CompanyBlock->IDRider . '"',
         ]);
 
         return response([

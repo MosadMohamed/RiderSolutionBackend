@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
-use App\Models\OfficeComplaint;
+use App\Models\Complaint;
 use App\Models\OfficeMember;
 use App\Models\Rider;
 use App\Models\RiderBonus;
@@ -73,7 +73,7 @@ class OfficeHomeController extends Controller
     public function ComplaintList()
     {
         $Office = Auth::guard('office')->user();
-        $OfficeComplaints = OfficeComplaint::where('IDOffice', $Office->IDOffice)->get();
+        $OfficeComplaints = Complaint::where('UserType', 'OFFICE')->where('IDUser', $Office->IDOffice)->get();
         return view('office.complaint.list', compact('OfficeComplaints'));
     }
 
@@ -85,8 +85,9 @@ class OfficeHomeController extends Controller
 
         $Office = Auth::guard('office')->user();
 
-        $Complaint = new OfficeComplaint();
-        $Complaint->IDOffice        = $Office->IDOffice;
+        $Complaint = new Complaint();
+        $Complaint->UserType        = 'OFFICE';
+        $Complaint->IDUser          = $Office->IDOffice;
         $Complaint->ComplaintText   = $request->ComplaintText;
         $Complaint->save();
 

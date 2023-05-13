@@ -17,6 +17,7 @@ use App\Http\Controllers\Integration\IntegrationFeedbackController;
 use App\Http\Controllers\Integration\IntegrationLateController;
 use App\Http\Controllers\Integration\IntegrationOrderController;
 use App\Http\Controllers\Integration\IntegrationShiftController;
+use App\Http\Controllers\Integration\IntegrationWorkingController;
 use App\Http\Controllers\Rider\RiderAuthController;
 use App\Http\Controllers\Rider\RiderDocumentController;
 use App\Http\Controllers\Rider\RiderHomeController;
@@ -131,4 +132,7 @@ Route::prefix('integration')->group(function () {
     Route::post('bonus/add',            [IntegrationBonusController::class, 'IntegrationBonusAdd']);
 
     Route::post('feedback/add',         [IntegrationFeedbackController::class, 'IntegrationFeedbackAdd']);
+
+    Route::post('working/start',        [IntegrationWorkingController::class, 'IntegrationWorkingStart']);
+    Route::post('working/end',          [IntegrationWorkingController::class, 'IntegrationWorkingEnd']);
 });

@@ -1,14 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminCountryController;
+use App\Http\Controllers\Admin\AdminHomeController;
+use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Office\OfficeAuthController;
 use App\Http\Controllers\Office\OfficeHomeController;
 use App\Http\Controllers\Office\OfficeReportController;
 use App\Http\Controllers\Office\OfficeRiderController;
-use App\Models\RiderShift;
-use Carbon\CarbonInterval;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,22 +40,85 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware('guest:web')->group(function () {
-        Route::get('login', [AuthController::class, 'AdminLogin'])->name('login');
-        Route::post('login', [AuthController::class, 'AdminLoginSubmit'])->name('login.submit');
+        Route::get('login', [AdminAuthController::class, 'AdminLogin'])->name('login');
+        Route::post('login', [AdminAuthController::class, 'AdminLoginSubmit'])->name('login.submit');
     });
 
     Route::middleware('auth:web')->group(function () {
-        Route::post('logout', [AuthController::class, 'AdminLogout'])->name('logout');
+        Route::post('logout', [AdminAuthController::class, 'AdminLogout'])->name('logout');
         // 
-        Route::get('home', [HomeController::class, 'AdminHome'])->name('home');
+        Route::get('home', [AdminHomeController::class, 'AdminHome'])->name('home');
 
-        Route::prefix('admin')->name('admin.')->group(function () {
-            Route::get('list', [AdminController::class, 'AdminList'])->name('list');
-            Route::get('add', [AdminController::class, 'AdminAdd'])->name('add');
-            Route::post('store', [AdminController::class, 'AdminStore'])->name('store');
-            Route::get('edit/{user}', [AdminController::class, 'AdminEdit'])->name('edit');
-            Route::post('update/{user}', [AdminController::class, 'AdminUpdate'])->name('update');
-            Route::post('active/{user}', [AdminController::class, 'AdminActive'])->name('active');
+        // Complaints
+        Route::prefix('complaint')->name('complaint.')->group(function () {
+            Route::get('rider', [AdminHomeController::class, 'ComplaintList'])->name('rider.list');
+            Route::get('office', [AdminHomeController::class, 'ComplaintList'])->name('office.list');
+            Route::get('company', [AdminHomeController::class, 'ComplaintList'])->name('company.list');
+        });
+
+        // Country
+        Route::prefix('country')->name('country.')->group(function () {
+            Route::get('list', [AdminCountryController::class, 'CountryList'])->name('list');
+            Route::get('add', [AdminCountryController::class, 'CountryAdd'])->name('add');
+            Route::post('store', [AdminCountryController::class, 'CountryStore'])->name('store');
+            Route::get('edit/{country}', [AdminCountryController::class, 'CountryEdit'])->name('edit');
+            Route::post('update/{country}', [AdminCountryController::class, 'CountryUpdate'])->name('update');
+            Route::post('active/{country}', [AdminCountryController::class, 'CountryActive'])->name('active');
+        });
+
+        // ActionBackLog
+        Route::prefix('log')->name('log.')->group(function () {
+            Route::get('rider', [AdminHomeController::class, 'ActionBackLog'])->name('rider.list');
+            Route::post('rider', [AdminHomeController::class, 'ActionBackLog'])->name('rider.list');
+            Route::get('office', [AdminHomeController::class, 'ActionBackLog'])->name('office.list');
+            Route::post('office', [AdminHomeController::class, 'ActionBackLog'])->name('office.list');
+            Route::get('company', [AdminHomeController::class, 'ActionBackLog'])->name('company.list');
+            Route::post('company', [AdminHomeController::class, 'ActionBackLog'])->name('company.list');
+            Route::get('integration', [AdminHomeController::class, 'ActionBackLog'])->name('integration.list');
+            Route::post('integration', [AdminHomeController::class, 'ActionBackLog'])->name('integration.list');
+        });
+
+        // Reports
+        Route::prefix('report')->name('report.')->group(function () {
+            Route::get('shift', [AdminReportController::class, 'ReportList'])->name('shift.list');
+            Route::post('shift', [AdminReportController::class, 'ReportList'])->name('shift.list');
+            Route::post('shift/details', [AdminReportController::class, 'ReportDetails'])->name('shift.details');
+
+            Route::get('order', [AdminReportController::class, 'ReportList'])->name('order.list');
+            Route::post('order', [AdminReportController::class, 'ReportList'])->name('ordet.list');
+            Route::post('order/details', [AdminReportController::class, 'ReportDetails'])->name('order.details');
+
+            Route::get('accept', [AdminReportController::class, 'ReportList'])->name('accept.list');
+            Route::post('accept', [AdminReportController::class, 'ReportList'])->name('accept.list');
+            Route::post('accept/details', [AdminReportController::class, 'ReportDetails'])->name('accept.details');
+
+            Route::get('absence', [AdminReportController::class, 'ReportList'])->name('absence.list');
+            Route::post('absence', [AdminReportController::class, 'ReportList'])->name('absence.list');
+            Route::post('absence/details', [AdminReportController::class, 'ReportDetails'])->name('absence.details');
+
+            Route::get('accident', [AdminReportController::class, 'ReportList'])->name('accident.list');
+            Route::post('accident', [AdminReportController::class, 'ReportList'])->name('accident.list');
+            Route::post('accident/details', [AdminReportController::class, 'ReportDetails'])->name('accident.details');
+
+            Route::get('annual', [AdminReportController::class, 'ReportList'])->name('annual.list');
+            Route::post('annual', [AdminReportController::class, 'ReportList'])->name('annual.list');
+            Route::post('annual/details', [AdminReportController::class, 'ReportDetails'])->name('annual.details');
+
+            Route::get('bonus', [AdminReportController::class, 'ReportList'])->name('bonus.list');
+            Route::post('bonus', [AdminReportController::class, 'ReportList'])->name('bonus.list');
+            Route::post('bonus/details', [AdminReportController::class, 'ReportDetails'])->name('bonus.details');
+
+            Route::get('break', [AdminReportController::class, 'ReportList'])->name('break.list');
+            Route::post('break', [AdminReportController::class, 'ReportList'])->name('break.list');
+            Route::post('break/details', [AdminReportController::class, 'ReportDetails'])->name('break.details');
+
+            Route::get('late', [AdminReportController::class, 'ReportList'])->name('late.list');
+            Route::post('late', [AdminReportController::class, 'ReportList'])->name('late.list');
+            Route::post('late/details', [AdminReportController::class, 'ReportDetails'])->name('late.details');
+
+            Route::get('feedback', [AdminReportController::class, 'ReportList'])->name('feedback.list');
+            Route::post('feedback', [AdminReportController::class, 'ReportList'])->name('feedback.list');
+            Route::post('feedback/details', [AdminReportController::class, 'ReportDetails'])->name('feedback.details');
         });
     });
 });

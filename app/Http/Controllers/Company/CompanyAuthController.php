@@ -94,7 +94,7 @@ class CompanyAuthController extends Controller
             'UserType'          => 'COMPANY',
             'IDUser'            => $Company->IDCompany,
             'ActionBackLog'     => 'COMPANY_LOGIN',
-            'ActionBackLogDesc' => 'Company Login By Token "' . $Token . '"',
+            'ActionBackLogDesc' => 'Company Login',
         ]);
 
         return response([
@@ -189,7 +189,7 @@ class CompanyAuthController extends Controller
             'UserType'          => 'COMPANY',
             'IDUser'            => $Company->IDCompany,
             'ActionBackLog'     => 'COMPANY_REGISTER',
-            'ActionBackLogDesc' => 'Company Register By Token "' . $Token . '"',
+            'ActionBackLogDesc' => 'Company Register',
         ]);
 
         return response([

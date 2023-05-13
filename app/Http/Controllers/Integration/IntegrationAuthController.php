@@ -81,7 +81,7 @@ class IntegrationAuthController extends Controller
             'UserType'          => 'INTEGRATION',
             'IDUser'            => $Company->IDCompany,
             'ActionBackLog'     => 'INTEGRATION_LOGIN',
-            'ActionBackLogDesc' => 'Integration Login By Token "' . $Token . '"',
+            'ActionBackLogDesc' => 'Integration',
         ]);
 
         return response([

@@ -27,7 +27,9 @@
                                 </span>
                             </div>
                             <div class="d-flex flex-column my-7">
-                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">{{ $Riders->count() }}</span>
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2" title="{{ $Riders->count() }}">
+                                    {{ App\Helper\OfficeHelper::NumberSystem( $Riders->count() ) }}
+                                </span>
                                 <div class="m-0">
                                     <!-- <span class="fw-semibold fs-6 text-gray-400">Riders</span> -->
                                 </div>
@@ -51,7 +53,9 @@
                                 </span>
                             </div>
                             <div class="d-flex flex-column my-7">
-                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">{{ $Shifts->count() }}</span>
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2" title="{{ $Shifts->count() }}">
+                                    {{ App\Helper\OfficeHelper::NumberSystem( $Shifts->count() ) }}
+                                </span>
                                 <div class="m-0">
                                     <!-- <span class="fw-semibold fs-6 text-gray-400">Shifts</span> -->
                                 </div>
@@ -75,7 +79,9 @@
                                 </span>
                             </div>
                             <div class="d-flex flex-column my-7">
-                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">{{ $Orders->count() }}</span>
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2" title="{{ $Orders->count() }}">
+                                    {{ App\Helper\OfficeHelper::NumberSystem( $Orders->count() ) }}
+                                </span>
                                 <div class="m-0">
                                     <!-- <span class="fw-semibold fs-6 text-gray-400">Orders</span> -->
                                 </div>
@@ -103,7 +109,9 @@
                                 </span>
                             </div>
                             <div class="d-flex flex-column my-7">
-                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">{{ $Orders->sum('OrderValue') }}</span>
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2" title="{{ $Orders->sum('OrderValue') }}">
+                                    {{ App\Helper\OfficeHelper::NumberSystem( $Orders->sum('OrderValue') ) }}
+                                </span>
                                 <div class="m-0">
                                     <!-- <span class="fw-semibold fs-6 text-gray-400">C APEX</span> -->
                                 </div>
@@ -128,7 +136,9 @@
                                 </span>
                             </div>
                             <div class="d-flex flex-column my-7">
-                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">{{ $Bonus->count() }}</span>
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2" title="{{ $Bonus->count() }}">
+                                    {{ App\Helper\OfficeHelper::NumberSystem( $Bonus->count() ) }}
+                                </span>
                                 <div class="m-0">
                                     <!-- <span class="fw-semibold fs-6 text-gray-400">OPEX</span> -->
                                 </div>
@@ -152,7 +162,10 @@
                                 </span>
                             </div>
                             <div class="d-flex flex-column my-7">
-                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">{{ $Bonus->sum('BonusValue') }}</span>
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2" title="{{ $Bonus->sum('BonusValue') }}">
+                                    {{ App\Helper\OfficeHelper::NumberSystem( $Bonus->sum('BonusValue') ) }}
+
+                                </span>
                                 <div class="m-0">
                                     <!-- <span class="fw-semibold fs-6 text-gray-400">OPEX</span> -->
                                 </div>

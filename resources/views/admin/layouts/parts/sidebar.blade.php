@@ -34,11 +34,20 @@
                 </div>
 
                 <div class="menu-item">
-                    <a class="menu-link {{ request()->segment(2) == 'admin' ? 'active' : '' }}" href="">
+                    <a class="menu-link {{ (request()->segment(2) == 'rider' && request()->segment(3) == 'list') ? 'active' : '' }}" href="{{ route('admin.rider.list') }}">
                         <span class="menu-icon">
                             <i class="fa-solid fa-user-secret"></i>
                         </span>
-                        <span class="menu-title"><del>Riders</del></span>
+                        <span class="menu-title">Riders</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link {{ (request()->segment(2) == 'rider' && request()->segment(3) == 'new') ? 'active' : '' }}" href="{{ route('admin.rider.new') }}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </span>
+                        <span class="menu-title">New Riders</span>
                     </a>
                 </div>
 
@@ -113,11 +122,11 @@
                 </div>
 
                 <div class="menu-item">
-                    <a class="menu-link {{ request()->segment(2) == 'NoData' ? 'active' : '' }}" href="">
+                    <a class="menu-link {{ request()->segment(2) == 'office' ? 'active' : '' }}" href="{{ route('admin.office.list') }}">
                         <span class="menu-icon">
                             <i class="fa-solid fa-gear"></i>
                         </span>
-                        <span class="menu-title"><del>Offices</del></span>
+                        <span class="menu-title">Offices</span>
                     </a>
                 </div>
                 <!--  -->

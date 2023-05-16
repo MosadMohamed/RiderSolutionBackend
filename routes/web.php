@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCountryController;
 use App\Http\Controllers\Admin\AdminHomeController;
+use App\Http\Controllers\Admin\AdminOfficeController;
 use App\Http\Controllers\Admin\AdminReportController;
+use App\Http\Controllers\Admin\AdminRiderController;
 use App\Http\Controllers\Office\OfficeAuthController;
 use App\Http\Controllers\Office\OfficeHomeController;
 use App\Http\Controllers\Office\OfficeReportController;
@@ -49,6 +51,29 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // 
         Route::get('home', [AdminHomeController::class, 'AdminHome'])->name('home');
 
+        // Rider
+        Route::prefix('rider')->name('rider.')->group(function () {
+            Route::get('list', [AdminRiderController::class, 'RiderList'])->name('list');
+            Route::get('new', [AdminRiderController::class, 'RiderNew'])->name('new');
+            Route::get('add', [AdminRiderController::class, 'RiderAdd'])->name('add');
+            Route::post('store', [AdminRiderController::class, 'RiderStore'])->name('store');
+            Route::get('edit/{rider}', [AdminRiderController::class, 'RiderEdit'])->name('edit');
+            Route::post('update/{rider}', [AdminRiderController::class, 'RiderUpdate'])->name('update');
+            Route::post('active/{rider}', [AdminRiderController::class, 'RiderActive'])->name('active');
+            Route::post('upload/{rider}', [AdminRiderController::class, 'RiderUpload'])->name('upload');
+            Route::get('document/{rider}', [AdminRiderController::class, 'RiderDocument'])->name('document');
+        });
+
+        // Office
+        Route::prefix('office')->name('office.')->group(function () {
+            Route::get('list', [AdminOfficeController::class, 'OfficeList'])->name('list');
+            Route::get('add', [AdminOfficeController::class, 'OfficeAdd'])->name('add');
+            Route::post('store', [AdminOfficeController::class, 'OfficeStore'])->name('store');
+            Route::get('edit/{office}', [AdminOfficeController::class, 'OfficeEdit'])->name('edit');
+            Route::post('update/{office}', [AdminOfficeController::class, 'OfficeUpdate'])->name('update');
+            Route::post('active/{office}', [AdminOfficeController::class, 'OfficeActive'])->name('active');
+        });
+
         // Complaints
         Route::prefix('complaint')->name('complaint.')->group(function () {
             Route::get('rider', [AdminHomeController::class, 'ComplaintList'])->name('rider.list');
@@ -59,9 +84,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Country
         Route::prefix('country')->name('country.')->group(function () {
             Route::get('list', [AdminCountryController::class, 'CountryList'])->name('list');
-            Route::get('add', [AdminCountryController::class, 'CountryAdd'])->name('add');
             Route::post('store', [AdminCountryController::class, 'CountryStore'])->name('store');
-            Route::get('edit/{country}', [AdminCountryController::class, 'CountryEdit'])->name('edit');
             Route::post('update/{country}', [AdminCountryController::class, 'CountryUpdate'])->name('update');
             Route::post('active/{country}', [AdminCountryController::class, 'CountryActive'])->name('active');
         });

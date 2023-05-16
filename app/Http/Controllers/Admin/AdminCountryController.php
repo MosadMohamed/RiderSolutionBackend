@@ -17,10 +17,10 @@ class AdminCountryController extends Controller
         return view('admin.country.list', compact('Countries'));
     }
 
-    public function CountryAdd()
-    {
-        return view('admin.country.add');
-    }
+    // public function CountryAdd()
+    // {
+    //     return view('admin.country.add');
+    // }
 
     public function CountryStore(Request $request)
     {
@@ -41,10 +41,10 @@ class AdminCountryController extends Controller
         return redirect()->route('admin.country.list')->with(['Message' => 'Add Successfuly']);
     }
 
-    public function CountryEdit(Country $Country)
-    {
-        return view('admin.country.edit', compact('Country'));
-    }
+    // public function CountryEdit(Country $Country)
+    // {
+    //     return view('admin.country.edit', compact('Country'));
+    // }
 
     public function CountryUpdate(Request $request, Country $Country)
     {

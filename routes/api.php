@@ -3,6 +3,7 @@
 use App\Http\Controllers\Company\CompanyAuthController;
 use App\Http\Controllers\Company\CompanyBlockController;
 use App\Http\Controllers\Company\CompanyHiringController;
+use App\Http\Controllers\Company\CompanyHomeController;
 use App\Http\Controllers\Company\CompanyRequestController;
 use App\Http\Controllers\Company\CompanyRiderController;
 use App\Http\Controllers\Company\CompanyTaskController;
@@ -74,6 +75,8 @@ Route::prefix('company')->group(function () {
     Route::post('login',                [CompanyAuthController::class, 'CompanyLogin']);
     Route::post('register',             [CompanyAuthController::class, 'CompanyRegister']);
     Route::post('logout',               [CompanyAuthController::class, 'CompanyLogout']);
+
+    Route::post('/home',                [CompanyHomeController::class, 'Home']);
 
     Route::post('hiring',               [CompanyHiringController::class, 'CompanyHiring']);
     Route::post('hiring/apply',         [CompanyHiringController::class, 'CompanyHiringApply']);

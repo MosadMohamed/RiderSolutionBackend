@@ -128,6 +128,7 @@ class RiderHomeController extends Controller
                 'RiderWorking'      => (int) $Rider->RiderWorking,
                 'CompanyWorkingEn'  => ($Rider->CompanyWorking) ? $Rider->CompanyWorking->CompanyNameEn : 'Not Working Now',
                 'CompanyWorkingAr'  => ($Rider->CompanyWorking) ? $Rider->CompanyWorking->CompanyNameAr : 'لا تعمل الان',
+                'CompanyImage'      => ($Rider->CompanyWorking) ? asset('images/companies/' . $Rider->CompanyWorking->CompanyImage) : '',
             ],
             'Company'   => CompanyResource::collection($Companies),
             'Hiring'    => HiringResource::collection($Hirings),

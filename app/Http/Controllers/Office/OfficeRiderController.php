@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActionBackLog;
 use App\Models\Rider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,6 +51,13 @@ class OfficeRiderController extends Controller
             $Rider->VehlcleType = $request->VehlcleType;
         }
         $Rider->save();
+
+        ActionBackLog::create([
+            'UserType'          => 'OFFICE',
+            'IDUser'            => $Office->IDOffice,
+            'ActionBackLog'     => 'OFFICE_ADD_RIDER',
+            'ActionBackLogDesc' => 'Office Add Rider ID =>' . $Rider->IDRider,
+        ]);
 
         return redirect()->route('office.rider.list')->with(['Message' => 'Add Successfuly']);
     }

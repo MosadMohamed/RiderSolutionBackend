@@ -126,7 +126,7 @@
                             <a href="" class="menu-link px-5">My Profile</a>
                         </div>
 
-                        <form action="{{route('admin.logout')}}" method="post">
+                        <form action="{{route('office.logout')}}" method="post">
                             <div class="menu-item px-5">
                                 @csrf
                                 <button type="submit" class="btn menu-link px-5 w-100">Sign Out</button>

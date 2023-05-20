@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActionBackLog;
 use App\Models\Complaint;
 use App\Models\OfficeMember;
 use App\Models\Rider;
@@ -49,6 +50,13 @@ class OfficeHomeController extends Controller
         $OfficeMember->OfficeMemberPhone    = $request->OfficeMemberPhone;
         $OfficeMember->save();
 
+        ActionBackLog::create([
+            'UserType'          => 'OFFICE',
+            'IDUser'            => $Office->IDOffice,
+            'ActionBackLog'     => 'OFFICE_ADD_MEMBER',
+            'ActionBackLogDesc' => 'Office Add Member ID =>' . $OfficeMember->IDOfficeMember,
+        ]);
+
         return redirect()->back()->with(['Message' => 'Add Successfuly']);
     }
 
@@ -67,7 +75,14 @@ class OfficeHomeController extends Controller
         $OfficeMember->OfficeMemberPhone    = $request->OfficeMemberPhone;
         $OfficeMember->save();
 
-        return redirect()->back()->with(['Message' => 'Add Successfuly']);
+        ActionBackLog::create([
+            'UserType'          => 'OFFICE',
+            'IDUser'            => $Office->IDOffice,
+            'ActionBackLog'     => 'OFFICE_EDIT_MEMBER',
+            'ActionBackLogDesc' => 'Office Edit Member ID =>' . $OfficeMember->IDOfficeMember,
+        ]);
+
+        return redirect()->back()->with(['Message' => 'Edit Successfuly']);
     }
 
     public function ComplaintList()
@@ -90,6 +105,13 @@ class OfficeHomeController extends Controller
         $Complaint->IDUser          = $Office->IDOffice;
         $Complaint->ComplaintText   = $request->ComplaintText;
         $Complaint->save();
+
+        ActionBackLog::create([
+            'UserType'          => 'OFFICE',
+            'IDUser'            => $Office->IDOffice,
+            'ActionBackLog'     => 'OFFICE_MAKE_COMPLAINT',
+            'ActionBackLogDesc' => 'Office Make Complaint ID =>' . $Complaint->IDComplaint,
+        ]);
 
         return redirect()->route('office.complaint.list');
     }

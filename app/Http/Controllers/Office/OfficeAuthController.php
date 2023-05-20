@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActionBackLog;
 use App\Models\Office;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -38,6 +39,13 @@ class OfficeAuthController extends Controller
         }
 
         Auth::guard('office')->login($Office);
+
+        ActionBackLog::create([
+            'UserType'          => 'OFFICE',
+            'IDUser'            => $Office->IDOffice,
+            'ActionBackLog'     => 'OFFICE_LOGIN',
+            'ActionBackLogDesc' => 'Office Login',
+        ]);
 
         return redirect()->route('office.home');
     }

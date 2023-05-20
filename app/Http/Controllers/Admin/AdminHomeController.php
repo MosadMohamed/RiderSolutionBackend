@@ -5,13 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ActionBackLog;
 use App\Models\Complaint;
+use App\Models\Rider;
+use App\Models\RiderBonus;
+use App\Models\RiderOrder;
+use App\Models\RiderShift;
 use Illuminate\Http\Request;
 
 class AdminHomeController extends Controller
 {
     public function AdminHome()
     {
-        return view('admin.home');
+        $Riders     = Rider::all();
+        $Shifts     = RiderShift::all();
+        $Orders     = RiderOrder::all();
+        $Bonus      = RiderBonus::all();
+        return view('admin.home', compact('Riders', 'Shifts', 'Orders', 'Bonus'));
     }
 
     public function ActionBackLog(Request $request)
@@ -123,7 +131,7 @@ class AdminHomeController extends Controller
                         'companies.CompanyNameEn as Name',
                         'complaints.created_at as Time'
                     )->get();
-              
+
                 $Type = 'Company';
                 return view('admin.complaint.list', compact('Complaints', 'Type'));
                 break;
